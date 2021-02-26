@@ -2,7 +2,7 @@ import json
 import sys
 
 
-PATH_SETTINGS = sys.path[1]+"/Python/conf/settings.json"
+PATH_SETTINGS = "../../Python/conf/settings.json"
 
 class Settings:
 
