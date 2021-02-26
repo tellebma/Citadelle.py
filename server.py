@@ -5,7 +5,7 @@ from game import Game
 
 # local = 192.168.1.27
 # server = 193.168.147.3
-server = "127.0.0.1"
+server = "193.168.147.3"
 port = 5555
 
 
