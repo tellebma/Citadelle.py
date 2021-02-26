@@ -1,0 +1,250 @@
+{
+    "cards":{
+        "persos": {
+            "assassin":{
+                "quantity":1,
+                "position": 1,
+                "image": "assets/cartes/persos/eng/01_assassin.PNG",
+                "skill": "L'assassin peut tuer un personnage de son choix. Celui-ci ne jouera pas durant ce tour.",
+                "color": "white"                
+            },
+            "thief":{
+                "quantity":1,
+                "position":2,
+                "image":"assets/cartes/persos/eng/02_thief.PNG",
+                "skill": "Le voleur peut voler le trésor du personnage de son choix. \n Il ne peut dépoullier ni l'assassin, ni sa victime. \n Quand le personnage détroussé sera révélé, il donnera tout son or au voleur.",
+                "color": "white"
+            },
+            "magician":{
+                "quantity":1,
+                "position":3,
+                "image":"assets/cartes/persos/eng/03_magician.PNG",
+                "skill":"AU CHOIX: Le magicien peut échanger la totalité des cartes de sa main avec celles du joueur de son choix. OU Le magicien peut échanger des cartes de sa main contre le même nombre de cartes de la pioche.",
+                "color":"white"
+            },
+            "king":{
+                "quantity":1,
+                "position":4,
+                "image":"assets/cartes/persos/eng/04_king.PNG",
+                "skill": "Le roi prend la Couronne, et choisira en premier son personnage lors du prochain tour. Chaque quartier Noble (jaune) dans sa cité lui rapporte 1 pièce d'or.",
+                "color":"yellow"
+            },
+            "bishop":{
+                "quantity":1,
+                "position":5,
+                "image":"assets/cartes/persos/eng/05_bishop.PNG",
+                "skill":"L'évèque ne peut être attaqué par le condottiere (Warlord), sauf s'il a été assassiné.\n Chaque quartier Religieux (bleu) dans sa cité lui rapporte 1 pièce d'or.",
+                "color": "blue"
+            },
+            "merchant":{
+                "quantity":1,
+                "position":6,
+                "image":"assets/cartes/persos/eng/06_merchant.PNG",
+                "skill":"Le marchand reçoit une pièce d'or supplémentaire au début de son tour. \n Chaque quartier Commerçant (vert) dans sa cité lui rapporte 1 pièce d'or.",
+                "color":"green"
+            },
+            "architect":{
+                "quantity":1,
+                "position":7,
+                "image":"assets/cartes/persos/eng/07_architect.PNG",
+                "skill":"L'architècte pioche 2 cartes supplémentaires au début de son tour. \n Il peut bâtir jusqu'à 3 quartiers.",
+                "color":"white"
+            },
+            "warlord":{
+                "quantity":1,
+                "position":8,
+                "image":"assets/cartes/persos/eng/08_warlord.PNG",
+                "skill": "Le condottiere peut détruire un quartier en payant son coût de construction moins 1. Chaque quartier Militaire (rouge) dans sa cité lui rapporte 1 pièce d'or.",
+                "color": "red"
+            }
+        },
+        "buildings":{
+            "temple":{
+                "quantity":2,
+                "color":"blue",
+                "price":1,
+                "bonus": "",
+                "image":"assets/cartes/buildings/eng/temple.PNG"
+            },
+            "church":{
+                "quantity":2,
+                "color":"blue",
+                "price":2, 
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/church.PNG"
+            },
+            "monastery":{
+                "quantity":2,
+                "color":"blue",
+                "price":3,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/monastery.PNG"
+            },
+            "cathedral":{
+                "quantity":1,
+                "color":"blue",
+                "price":5,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/cathedral.PNG"
+            },
+            "watchtower":{
+                "quantity":2,
+                "color":"red",
+                "price":1,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/watchtower.PNG"
+            },
+            "prison":{
+                "quantity":2,
+                "color":"red",
+                "price":2,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/prison.PNG"
+            },
+            "barracks":{
+                "quantity":2,
+                "color":"red",
+                "price":3,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/barracks.PNG"
+            },
+            "fortress":{
+                "quantity":1,
+                "color":"red",
+                "price":5,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/fortress.PNG"
+            },
+            "manor":{
+                "quantity":4,
+                "color":"yellow",
+                "price":3,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/manor.PNG"
+            },
+            "castle":{
+                "quantity":3,
+                "color":"yellow",
+                "price":5,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/castle.PNG"
+            },
+            "tavern":{
+                "quantity":4,
+                "color":"green",
+                "price":1,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/tavern.PNG"
+            },
+            "market":{
+                "quantity":3,
+                "color":"green",
+                "price":2,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/market.PNG"
+            },
+            "trading_post":{
+                "quantity":2,
+                "color":"green",
+                "price":2,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/trading_post.PNG"
+            },
+            "docks":{
+                "quantity":2,
+                "color":"green",
+                "price":2,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/docks.PNG"
+            },
+            "harbor":{
+                "quantity":2,
+                "color":"green",
+                "price":4,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/harbor.PNG"
+            },
+            "town_hall":{
+                "quantity":1,
+                "color":"green",
+                "price":5,
+                "bonus":"",
+                "image":"assets/cartes/buildings/eng/town_hall.PNG"
+            },
+            "smithy":{
+                "quantity":1,
+                "color":"purple",
+                "price":5,
+                "bonus":"Une fois par tour, payez 2 pièces d'or pour piocher trois cartes.",
+                "image":"assets/cartes/buildings/eng/smithy.PNG"
+            },
+            "laboratory":{
+                "quantity":1,
+                "color":"purple",
+                "price":5,
+                "bonus":"Une fois par tour, défaussez une carte de votre main pour gagner 2 pièces d'or.",
+                "image":"assets/cartes/buildings/eng/laboratory.PNG"
+            },
+            "school_of_magic":{
+                "quantity":1,
+                "color":"purple",
+                "price":6,
+                "bonus":"Pour la perception des revenus, l'école de magie est considérée comme un quartier de la couleur de votre choix.",
+                "image":"assets/cartes/buildings/eng/school_of_magic.PNG"
+            },
+            "keep":{
+                "quantity":1,
+                "color":"purple",
+                "price":3,
+                "bonus":"Ne peut être détruit par le warlord.",
+                "image":"assets/cartes/buildings/eng/keep.PNG"
+            },
+            "dragon_gate":{
+                "quantity":1,
+                "color":"purple",
+                "price":6,
+                "bonus":"Rapporte deux points de plus à la fin de la partie.",
+                "image":"assets/cartes/buildings/eng/dragon_gate.PNG"
+            },
+            "haunted_quarter":{
+                "quantity":1,
+                "color":"purple",
+                "price":2,
+                "bonus":"À la fin de la partie, le quartir hanté compte comme un quartier du type de votre choix.",
+                "image":"assets/cartes/buildings/eng/haunted_quarter.PNG"
+            },
+            "library":{
+                "quantity":1,
+                "color":"purple",
+                "price":6,
+                "bonus":"Si vous choississez de piocher des cartes au début de votre carte, gardez toutes les cartes.",
+                "image":"assets/cartes/buildings/eng/library.PNG"
+            },
+            "map_room":{
+                "quantity":1,
+                "color":"purple",
+                "price":5,
+                "bonus":"À la fin de la partie, scorez 1 point en plus par cartes dans votre main.",
+                "image":"assets/cartes/buildings/eng/map_room.PNG"
+            },
+            "imperial_treasury":{
+                "quantity":1,
+                "color":"purple",
+                "price":5,
+                "bonus":"À la fin de la partie, scorez 1 point par pièces d'or en votre possession.",
+                "image":"assets/cartes/buildings/eng/imperial.treasury.PNG"
+            },
+            "statue":{
+                "quantity":1,
+                "color":"purple",
+                "price":3,
+                "bonus":"Si vous avez la couronne à la fin de la partie, scorez 5 points en plus.",
+                "image":"assets/cartes/buildings/eng/statue.PNG"
+            }
+        },
+        "versos":{
+            "buildings": "assets/cartes/buildings/eng/_buildings_verso.PNG",
+            "persos": "assets/cartes/persos/eng/_perso_verso.PNG"
+        }
+    }
+}
