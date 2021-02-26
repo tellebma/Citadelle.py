@@ -3,6 +3,7 @@ from Python.network.network import Network
 from Python.conf import settings
 from Python.pygame import setup as f
 from Python.network import network as n
+from Python.pygame.card_building import CardBuilding
 
 """
 Affichage :
@@ -41,7 +42,7 @@ def reglage():
     while running:
         Fermer = f.Center_texte("Y en a pas !", window_width / 2, window_width * 0.30,
                                 (0, 0, 255),
-                                "ComicSansMS", 40)
+                                "ARIAL", 40)
         text, text_rect = Fermer.write(screen)
         btn = f.Button_center("Menu (retour)", window_width / 2, window_height * 0.6, 200, 70, (255, 155, 0))
         btn.draw(screen)
@@ -84,7 +85,7 @@ def main_menu():
             if event.type == pygame.QUIT:
                 running = False
         Message_Bienvenue = f.Center_texte("Citadelle".upper(), window_width / 2, window_height * 0.10, (0, 255, 0),
-                                           "ComicSansMS", 50)
+                                           "ARIAL", 50)
         text, text_rect = Message_Bienvenue.write(screen)
         """
         if pseudo == "":
@@ -136,7 +137,7 @@ def main_menu():
         screen.fill(0)
         Fermer = f.Center_texte("Merci d'avoir joué !", window_width / 2, window_width * 0.30,
                                 (0, 255, 0),
-                                "ComicSansMS", 50)
+                                "ARIAL", 50)
         text, text_rect = Fermer.write(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
@@ -155,7 +156,7 @@ def Solo():
     screen.fill(0)
     Fermer = f.Center_texte("Bientôt un Solo !", window_width / 2, window_width * 0.30,
                             (0, 255, 0),
-                            "ComicSansMS", 50)
+                            "ARIAL", 50)
     text, text_rect = Fermer.write(screen)
     screen.blit(text, text_rect)
     pygame.display.flip()
@@ -183,12 +184,6 @@ def Multijoueurs():
     pygame.display.flip()
     Lobby = True
     Network = n.Network()
-    answer = Network.getP()
-    print("result connexion : "+answer)
-    while running:
-        pygame.time.delay(1000)
-        answer = Network.Get()
-        print(f"srv :{answer}")
 
     connexion = Network.getP()
     print(type(connexion))
@@ -222,7 +217,7 @@ def Multijoueurs():
                                        window_width / 2, window_width * 0.10,
                                        (255, 255, 255),
                                        "Arial", 20)
-        error_message.write(screen)
+        text, text_rect = error_message.write(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
         pygame.time.delay(1500)
@@ -262,36 +257,39 @@ def Multijoueurs():
             pygame.display.flip()
 
         #pseudo
-        PlayerInfo = Network.send("PlayerInfo").split("|")
-        Nombre_de_joueurs = PlayerInfo[1]
+        PlayerInfo = Network.send("PlayerInfo")
+        if PlayerInfo == "erreur":
+            print(PlayerInfo)
+        else:
+            PlayerInfo =PlayerInfo.split("|")
+            Nombre_de_joueurs = PlayerInfo[1]
 
-        Nombre_de_joueurs_Max = PlayerInfo[2]
+            Nombre_de_joueurs_Max = PlayerInfo[2]
 
 
 
-        if Old_nb_joueurs != Nombre_de_joueurs:
-            if Nombre_de_joueurs == 1:
-                texte = "Joueur : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
-            else:
-                texte = "Joueurs : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
-            Player_Info_Message = f.Center_texte("",
-                                                 window_width * 0.2, window_width * 0.2,
-                                                 (255, 255, 255),
-                                                 "Arial", 15)
-            Player_Info_Message.text = texte
-            Player_Info_Message.modifier(texte)
-            text, text_rect = Player_Info_Message.write(screen)
+            if Old_nb_joueurs != Nombre_de_joueurs:
+                if Nombre_de_joueurs == 1:
+                    texte = "Joueur : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
+                else:
+                    texte = "Joueurs : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
+                Player_Info_Message = f.Center_texte("",
+                                                     window_width * 0.2, window_width * 0.2,
+                                                     (255, 255, 255),
+                                                     "Arial", 15)
+                Player_Info_Message.text = texte
+                Player_Info_Message.modifier(texte)
+                text, text_rect = Player_Info_Message.write(screen)
 
-            screen.blit(text, text_rect)
-            draw = False
-        Old_nb_joueurs = Nombre_de_joueurs
+                screen.blit(text, text_rect)
+                draw = False
+            Old_nb_joueurs = Nombre_de_joueurs
 
         if Network.send("IsGameStarted") == "Yes":
             print("lancement de la partie !")
 
             Lobby = False
             InGame = True
-
     while InGame:
 
         screen.fill(0)
@@ -303,7 +301,11 @@ def Multijoueurs():
         text, text_rect = Player_Info_Message.write(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
-
+        ### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
+        card_temple = CardBuilding("temple")
+        card_church = CardBuilding("church")
+        screen.blit(card_temple.image,(0,0))
+        screen.blit(card_church.image,(212,0))
 """
  __  _                _   
 / _\| |_  __ _  _ __ | |_ 
@@ -316,3 +318,4 @@ loading()
 screen = pygame.display.set_mode((window_width, window_height))
 while True:
     main_menu()
+    # Multijoueurs()
