@@ -9,6 +9,7 @@ class Game:
         self.max_player = 7
         self.list_player = []
 
+
     def connect(self,idPlayer):
         self.list_player.append(idPlayer)
 
