@@ -182,17 +182,12 @@ def Multijoueurs():
     pygame.display.flip()
     running = True
     Network = n.Network()
-    answer = ""
-    prev_answer = ""
+
     while running:
-        pygame.time.delay(200)
-        if not answer:
-            pass
-        else:
-            prev_answer = answer
-        if prev_answer != answer:
-            print("srv :" + answer)
+        pygame.time.delay(1000)
         answer = Network.getP()
+        print("srv :" + answer)
+
 
 
 

@@ -5,7 +5,7 @@ from game import Game
 
 # local = 192.168.1.27
 # server = 193.168.147.3
-server = "192.168.1.27"
+server = "127.0.0.1"
 port = 5555
 
 
@@ -69,11 +69,10 @@ idCount = 0
 
 
 def threaded_client(conn, idJoueur, ishost):
-    global idCount
     global nbjconnecte
     global host
     running_lobby = True
-    reply = ""
+
     while True:
 
         while running_lobby:
@@ -87,7 +86,8 @@ def threaded_client(conn, idJoueur, ishost):
 
             """
             try:
-                conn.send(str.encode(str(idJoueur) + "|" + str(ishost) + "|" + str(nbjconnecte)))
+                print(len(IdJoueurUtilise))
+                conn.send(str.encode(str(idJoueur) + "|" + str(ishost) + "|" + str(len(IdJoueurUtilise))))
                 data = conn.recv(4096).decode()
                 if not data:
                     break
@@ -106,12 +106,18 @@ def threaded_client(conn, idJoueur, ishost):
             print("Lost connection")
             IdJoueurUtilise.remove(idJoueur)
             nbjconnecte -= 1
+            if hostPlayerId == idJoueur:
+                if nbjconnecte>0:
+                    hostPlayerId = IdJoueurUtilise[0]
+                else:
+                    host = False
+
             try:
                 del games[gameId]
                 print("Closing Game", gameId)
             except:
                 pass
-            idCount -= 1
+
             conn.close()
             break
 
@@ -119,6 +125,8 @@ def threaded_client(conn, idJoueur, ishost):
 
 IdJoueurUtilise = []
 global nbjconnecte
+global host
+global hostPlayerId
 nbjconnecte = 0
 nbjmax = 7
 host = False
@@ -130,22 +138,19 @@ while True:
         conn.send(str.encode(str("Error|PlayerLimit")))
     else:
 
-        if nbjconnecte == 0:
-            IdJoueur = 1
-        else:
-            i = 0
-            IdJoueur = 0
-            while IdJoueur == 0 and i < nbjmax:
-                i += 1
-
-                if IdJoueurUtilise.count(i) == 0:
-                    IdJoueur = i
+        i = 0
+        IdJoueur = 0
+        while IdJoueur == 0 and i < nbjmax:
+            i += 1
+            if IdJoueurUtilise.count(i) == 0:
+                IdJoueur = i
 
         IdJoueurUtilise.append(IdJoueur)
         print("Id Joueur = " + str(IdJoueur))
 
         nbjconnecte += 1
-        if not host:
+
+        if host == False:
             ishost = 1
             host = True
             hostPlayerId = IdJoueur

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="Commit de base">
-      <change afterPath="$PROJECT_DIR$/coords.py" afterDir="false" />
+    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Python/network/network.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/network/network.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
@@ -125,7 +125,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614351778352</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur.">
+      <created>1614361168853</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614361168853</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -141,6 +148,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit de base" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit de base" />
+    <MESSAGE value="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur." />
   </component>
 </project>
