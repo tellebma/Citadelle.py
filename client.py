@@ -1,8 +1,11 @@
 import pygame
+
 from Python.network.network import Network
 from Python.conf import settings
 from Python.pygame import setup as f
 from Python.network import network as n
+from Python.pygame.card_building import CardBuilding
+
 
 """
 Affichage :
@@ -83,8 +86,8 @@ def main_menu():
             """Ferme le prgm en cas de fermeture de la fenetre."""
             if event.type == pygame.QUIT:
                 running = False
-        Message_Bienvenue = f.Center_texte("Citadelle".upper(), window_width / 2, window_height * 0.10, (0, 255, 0),
-                                           "ComicSansMS", 50)
+        Message_Bienvenue = f.Center_texte("Citadelle".upper(), window_width / 2, window_height * 0.10, (255,255,255),
+                                           "ARIAL", 50)
         text, text_rect = Message_Bienvenue.write(screen)
         """
         if pseudo == "":
@@ -189,7 +192,14 @@ def Multijoueurs():
         print("srv :" + answer)
 
 
+        ### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
+        card_temple = CardBuilding("temple")
+        card_church = CardBuilding("church")
+        screen.blit(card_temple.image,(0,0))
+        screen.blit(card_church.image,(212,0))
 
+
+        pygame.display.flip()
 
         for event in pygame.event.get():
             """Ferme le prgm en cas de fermeture de la fenetre."""

@@ -2,13 +2,13 @@ import pygame
 
 from cards import Cards 
 
-global PATH_PERSO_CARD = "assets/cartes/persos/eng/"
-global EXTENSION = ".PNG"
+
 
 class CardPerso(Cards):
     """Création d'une carte personnage. Hérite de la classe Cards
     """
-
+    self.PATH_PERSO_CARD = "assets/cartes/persos/eng/"
+    self.EXTENSION = ".PNG"
     def __init__(self, perso_name):
         """Création de la carte demandée
 
@@ -18,8 +18,8 @@ class CardPerso(Cards):
                                          thief = 02_thief
                                         etc...
         """
-        super.__init__()
-        self.path_perso = PATH_PERSO_CARD + perso_name + EXTENSION
+        super().__init__()
+        self.path_perso = self.PATH_PERSO_CARD + perso_name + self.EXTENSION
         self.image = pygame.image.load(self.path_perso)
 
 

@@ -1,15 +1,25 @@
 import pygame
 
-from cards import Cards
+if __name__ == "_main_":
+    from cards import Cards
 
-global PATH_BUILDING_CARD = "assets/cartes/buildings/eng/"
-global EXTENSION = ".PNG"
+    
+else: 
+    from Python.pygame.cards import Cards
+
+
 
 class CardBuilding(Cards):
 
+    
+
     def __init__(self, building_name):
-        super.__init()
-        self.path_building = PATH_PERSO_CARD + building_name + EXTENSION
+        super().__init__()
+        self.PATH_BUILDING_CARD = "../../assets/cartes/buildings/eng/"
+        self.EXTENSION = ".PNG"
+        self.path_building = self.PATH_BUILDING_CARD + building_name + self.EXTENSION
         self.image = pygame.image.load(self.path_building)
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        
 
         
