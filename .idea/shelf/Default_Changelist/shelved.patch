@@ -1,0 +1,1050 @@
+Index: Python/pygame/setup.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\r\nautor : https://github.com/StevePaget\r\n\r\nhttps://github.com/StevePaget/Pygame_Functions\r\n\r\n\r\n\"\"\"\r\nimport pygame, sys, os\r\n\r\nfrom pathlib import Path\r\nDIR = Path(__file__).parent.absolute()\r\nDIR = f'{DIR}'.replace('\\\\','/')\r\nos.chdir(DIR)\r\n\r\n\r\nclass Texte:\r\n    def __init__(self, text, x, y, color, font, taille):\r\n        self.text = text\r\n        self.x = x\r\n        self.y = y\r\n        self.color = color\r\n        self.font = pygame.font.SysFont(font, taille)\r\n\r\n    def write(self, screen):\r\n        screen.blit(self.font.render(self.text, 1, self.color), (self.x, self.y))\r\n\r\n\r\nclass Center_texte:\r\n    def __init__(self, text, x, y, color, font, taille):\r\n        self.text = text\r\n        self.x = x\r\n        self.y = y\r\n        self.color = color\r\n        self.font = pygame.font.SysFont(font, taille)\r\n\r\n    def write(self, screen):\r\n        text = self.font.render(self.text, 1, self.color)\r\n        text_rect = text.get_rect(center=(self.x, self.y))\r\n        return text, text_rect\r\n\r\n\r\nclass Button:\r\n    def __init__(self, text, x, y, color):\r\n        self.text = text\r\n        self.x = x\r\n        self.y = y\r\n        self.color = color\r\n        self.width = 150\r\n        self.height = 100\r\n\r\n    def draw(self, screen):\r\n        \"\"\"\r\n        Repenser cette fonction pour directement donner les coordonnée du centre du boutton...\r\n\r\n\r\n        :param screen:\r\n        :return:\r\n        \"\"\"\r\n\r\n        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))\r\n        font = pygame.font.SysFont(\"comicsans\", 40)\r\n        text = font.render(self.text, 1, (255, 255, 255))\r\n        screen.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),\r\n                           self.y + round(self.height / 2) - round(text.get_height() / 2)))\r\n\r\n    def click(self, pos):\r\n        \"\"\"\r\n                Repenser cette fonction pour directement donner les coordonnée du centre du boutton...\r\n\r\n\r\n                :param screen:\r\n                :return:\r\n        \"\"\"\r\n        x1 = pos[0]\r\n        y1 = pos[1]\r\n        if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:\r\n            return True\r\n        else:\r\n            return False\r\n\r\n\r\nclass Button_center:\r\n    def __init__(self, text, x, y, width, height, color):\r\n        self.text = text\r\n        self.color = color\r\n        ##################################\r\n        if width != None:\r\n            self.width = width\r\n        else:\r\n            self.width = 150\r\n        ##################################\r\n        if width != None:\r\n            self.height = height\r\n        else:\r\n            self.height = 100\r\n        ##################################\r\n\r\n        self.x = x - self.width / 2\r\n        self.y = y - self.height / 2\r\n\r\n    def draw(self, screen):\r\n        \"\"\"\r\n        Repenser cette fonction pour directement donner les coordonnée du centre du boutton...\r\n\r\n\r\n        :param screen:\r\n        :return:\r\n        \"\"\"\r\n        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))\r\n        font = pygame.font.SysFont(\"comicsans\", 40)\r\n        text = font.render(self.text, 1, (255, 255, 255))\r\n        screen.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),\r\n                           self.y + round(self.height / 2) - round(text.get_height() / 2)))\r\n\r\n    def click(self, pos):\r\n        \"\"\"\r\n                Repenser cette fonction pour directement donner les coordonnée du centre du boutton...\r\n\r\n\r\n                :param screen:\r\n                :return:\r\n        \"\"\"\r\n        x1 = pos[0]\r\n        y1 = pos[1]\r\n        if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:\r\n            return True\r\n        else:\r\n            return False\r\n\r\n\r\n\r\npygame.mixer.pre_init(44100, -16, 2, 512)\r\npygame.init()\r\npygame.mixer.init()\r\nspriteGroup = pygame.sprite.OrderedUpdates()\r\ntextboxGroup = pygame.sprite.OrderedUpdates()\r\ngameClock = pygame.time.Clock()\r\nmusicPaused = False\r\nhiddenSprites = pygame.sprite.OrderedUpdates()\r\nscreenRefresh = True\r\nbackground = None\r\n\r\nkeydict = {\"space\": pygame.K_SPACE, \"esc\": pygame.K_ESCAPE, \"up\": pygame.K_UP, \"down\": pygame.K_DOWN,\r\n           \"left\": pygame.K_LEFT, \"right\": pygame.K_RIGHT, \"return\": pygame.K_RETURN,\r\n           \"a\": pygame.K_a,\r\n           \"b\": pygame.K_b,\r\n           \"c\": pygame.K_c,\r\n           \"d\": pygame.K_d,\r\n           \"e\": pygame.K_e,\r\n           \"f\": pygame.K_f,\r\n           \"g\": pygame.K_g,\r\n           \"h\": pygame.K_h,\r\n           \"i\": pygame.K_i,\r\n           \"j\": pygame.K_j,\r\n           \"k\": pygame.K_k,\r\n           \"l\": pygame.K_l,\r\n           \"m\": pygame.K_m,\r\n           \"n\": pygame.K_n,\r\n           \"o\": pygame.K_o,\r\n           \"p\": pygame.K_p,\r\n           \"q\": pygame.K_q,\r\n           \"r\": pygame.K_r,\r\n           \"s\": pygame.K_s,\r\n           \"t\": pygame.K_t,\r\n           \"u\": pygame.K_u,\r\n           \"v\": pygame.K_v,\r\n           \"w\": pygame.K_w,\r\n           \"x\": pygame.K_x,\r\n           \"y\": pygame.K_y,\r\n           \"z\": pygame.K_z,\r\n           \"1\": pygame.K_1,\r\n           \"2\": pygame.K_2,\r\n           \"3\": pygame.K_3,\r\n           \"4\": pygame.K_4,\r\n           \"5\": pygame.K_5,\r\n           \"6\": pygame.K_6,\r\n           \"7\": pygame.K_7,\r\n           \"8\": pygame.K_8,\r\n           \"9\": pygame.K_9,\r\n           \"0\": pygame.K_0,\r\n           \"num0\": pygame.K_KP0,\r\n           \"num1\": pygame.K_KP1,\r\n           \"num2\": pygame.K_KP2,\r\n           \"num3\": pygame.K_KP3,\r\n           \"num4\": pygame.K_KP4,\r\n           \"num5\": pygame.K_KP5,\r\n           \"num6\": pygame.K_KP6,\r\n           \"num7\": pygame.K_KP7,\r\n           \"num8\": pygame.K_KP8,\r\n           \"num9\": pygame.K_KP9}\r\nscreen = \"\"\r\n\r\n\r\nclass Background():\r\n    def __init__(self):\r\n        self.colour = pygame.Color(\"black\")\r\n\r\n    def setTiles(self, tiles):\r\n        if type(tiles) is str:\r\n            self.tiles = [[loadImage(tiles)]]\r\n        elif type(tiles[0]) is str:\r\n            self.tiles = [[loadImage(i) for i in tiles]]\r\n        else:\r\n            self.tiles = [[loadImage(i) for i in row] for row in tiles]\r\n        self.stagePosX = 0\r\n        self.stagePosY = 0\r\n        self.tileWidth = self.tiles[0][0].get_width()\r\n        self.tileHeight = self.tiles[0][0].get_height()\r\n        screen.blit(self.tiles[0][0], [0, 0])\r\n        self.surface = screen.copy()\r\n\r\n    def scroll(self, x, y):\r\n        self.stagePosX -= x\r\n        self.stagePosY -= y\r\n        col = (self.stagePosX % (self.tileWidth * len(self.tiles[0]))) // self.tileWidth\r\n        xOff = (0 - self.stagePosX % self.tileWidth)\r\n        row = (self.stagePosY % (self.tileHeight * len(self.tiles))) // self.tileHeight\r\n        yOff = (0 - self.stagePosY % self.tileHeight)\r\n\r\n        col2 = ((self.stagePosX + self.tileWidth) % (self.tileWidth * len(self.tiles[0]))) // self.tileWidth\r\n        row2 = ((self.stagePosY + self.tileHeight) % (self.tileHeight * len(self.tiles))) // self.tileHeight\r\n        screen.blit(self.tiles[row][col], [xOff, yOff])\r\n        screen.blit(self.tiles[row][col2], [xOff + self.tileWidth, yOff])\r\n        screen.blit(self.tiles[row2][col], [xOff, yOff + self.tileHeight])\r\n        screen.blit(self.tiles[row2][col2], [xOff + self.tileWidth, yOff + self.tileHeight])\r\n\r\n        self.surface = screen.copy()\r\n\r\n    def setColour(self, colour):\r\n        self.colour = parseColour(colour)\r\n        screen.fill(self.colour)\r\n        pygame.display.update()\r\n        self.surface = screen.copy()\r\n\r\n\r\nclass newSprite(pygame.sprite.Sprite):\r\n    def __init__(self, filename, frames=1, altDims = None):\r\n        pygame.sprite.Sprite.__init__(self)\r\n        self.images = []\r\n        img = loadImage(filename)\r\n        if altDims:\r\n            img = pygame.transform.scale(img, (altDims[0]*frames, altDims[1]))\r\n        self.originalWidth = img.get_width() // frames\r\n        self.originalHeight = img.get_height()\r\n        frameSurf = pygame.Surface((self.originalWidth, self.originalHeight), pygame.SRCALPHA, 32)\r\n        x = 0\r\n        for frameNo in range(frames):\r\n            frameSurf = pygame.Surface((self.originalWidth, self.originalHeight), pygame.SRCALPHA, 32)\r\n            frameSurf.blit(img, (x, 0))\r\n            self.images.append(frameSurf.copy())\r\n            x -= self.originalWidth\r\n        self.image = pygame.Surface.copy(self.images[0])\r\n\r\n        self.currentImage = 0\r\n        self.rect = self.image.get_rect()\r\n        self.rect.topleft = (0, 0)\r\n        self.mask = pygame.mask.from_surface(self.image)\r\n        self.angle = 0\r\n        self.scale = 1\r\n\r\n    def addImage(self, filename):\r\n        self.images.append(loadImage(filename))\r\n\r\n    def move(self, xpos, ypos, centre=False):\r\n        if centre:\r\n            self.rect.center = [xpos, ypos]\r\n        else:\r\n            self.rect.topleft = [xpos, ypos]\r\n\r\n    def changeImage(self, index):\r\n        self.currentImage = index\r\n        if self.angle == 0 and self.scale == 1:\r\n            self.image = self.images[index]\r\n        else:\r\n            self.image = pygame.transform.rotozoom(self.images[self.currentImage], -self.angle, self.scale)\r\n        oldcenter = self.rect.center\r\n        self.rect = self.image.get_rect()\r\n        originalRect = self.images[self.currentImage].get_rect()\r\n        self.originalWidth = originalRect.width\r\n        self.originalHeight = originalRect.height\r\n        self.rect.center = oldcenter\r\n        self.mask = pygame.mask.from_surface(self.image)\r\n        if screenRefresh:\r\n            updateDisplay()\r\n\r\n\r\nclass newTextBox(pygame.sprite.Sprite):\r\n    def __init__(self, text, xpos, ypos, width, case, maxLength, fontSize):\r\n        pygame.sprite.Sprite.__init__(self)\r\n        self.text = \"\"\r\n        self.width = width\r\n        self.initialText = text\r\n        self.case = case\r\n        self.maxLength = maxLength\r\n        self.boxSize = int(fontSize * 1.7)\r\n        self.image = pygame.Surface((width, self.boxSize))\r\n        self.image.fill((255, 255, 255))\r\n        pygame.draw.rect(self.image, (0, 0, 0), [0, 0, width - 1, self.boxSize - 1], 2)\r\n        self.rect = self.image.get_rect()\r\n        self.fontFace = pygame.font.match_font(\"Arial\")\r\n        self.fontColour = pygame.Color(\"black\")\r\n        self.initialColour = (180, 180, 180)\r\n        self.font = pygame.font.Font(self.fontFace, fontSize)\r\n        self.rect.topleft = [xpos, ypos]\r\n        newSurface = self.font.render(self.initialText, True, self.initialColour)\r\n        self.image.blit(newSurface, [10, 5])\r\n\r\n    def update(self, keyevent):\r\n        key = keyevent.key\r\n        unicode = keyevent.unicode\r\n        if (31 < key < 127 or 255 < key < 266) and (\r\n                self.maxLength == 0 or len(self.text) < self.maxLength):  # only printable characters\r\n            if keyevent.mod in (1, 2) and self.case == 1 and key >= 97 and key <= 122:\r\n                # force lowercase letters\r\n                self.text += chr(key)\r\n            elif keyevent.mod == 0 and self.case == 2 and key >= 97 and key <= 122:\r\n                self.text += chr(key - 32)\r\n            else:\r\n                # use the unicode char\r\n                self.text += unicode\r\n\r\n        elif key == 8:\r\n            # backspace. repeat until clear\r\n            keys = pygame.key.get_pressed()\r\n            nexttime = pygame.time.get_ticks() + 200\r\n            deleting = True\r\n            while deleting:\r\n                keys = pygame.key.get_pressed()\r\n                if keys[pygame.K_BACKSPACE]:\r\n                    thistime = pygame.time.get_ticks()\r\n                    if thistime > nexttime:\r\n                        self.text = self.text[0:len(self.text) - 1]\r\n                        self.image.fill((255, 255, 255))\r\n                        pygame.draw.rect(self.image, (0, 0, 0), [0, 0, self.width - 1, self.boxSize - 1], 2)\r\n                        newSurface = self.font.render(self.text, True, self.fontColour)\r\n                        self.image.blit(newSurface, [10, 5])\r\n                        updateDisplay()\r\n                        nexttime = thistime + 50\r\n                        pygame.event.clear()\r\n                else:\r\n                    deleting = False\r\n\r\n        self.image.fill((255, 255, 255))\r\n        pygame.draw.rect(self.image, (0, 0, 0), [0, 0, self.width - 1, self.boxSize - 1], 2)\r\n        newSurface = self.font.render(self.text, True, self.fontColour)\r\n        self.image.blit(newSurface, [10, 5])\r\n        if screenRefresh:\r\n            updateDisplay()\r\n\r\n    def move(self, xpos, ypos, centre=False):\r\n        if centre:\r\n            self.rect.topleft = [xpos, ypos]\r\n        else:\r\n            self.rect.center = [xpos, ypos]\r\n\r\n    def clear(self):\r\n        self.image.fill((255, 255, 255))\r\n        pygame.draw.rect(self.image, (0, 0, 0), [0, 0, self.width - 1, self.boxSize - 1], 2)\r\n        newSurface = self.font.render(self.initialText, True, self.initialColour)\r\n        self.image.blit(newSurface, [10, 5])\r\n        if screenRefresh:\r\n            updateDisplay()\r\n\r\n\r\nclass newLabel(pygame.sprite.Sprite):\r\n    def __init__(self, text, fontSize, font, fontColour, xpos, ypos, background):\r\n        pygame.sprite.Sprite.__init__(self)\r\n        self.text = text\r\n        self.fontColour = parseColour(fontColour)\r\n        self.fontFace = pygame.font.match_font(font)\r\n        self.fontSize = fontSize\r\n        self.background = background\r\n        self.font = pygame.font.Font(self.fontFace, self.fontSize)\r\n        self.renderText()\r\n        self.rect.topleft = [xpos, ypos]\r\n\r\n    def update(self, newText, fontColour, background):\r\n        self.text = newText\r\n        if fontColour:\r\n            self.fontColour = parseColour(fontColour)\r\n        if background:\r\n            self.background = parseColour(background)\r\n\r\n        oldTopLeft = self.rect.topleft\r\n        self.renderText()\r\n        self.rect.topleft = oldTopLeft\r\n        if screenRefresh:\r\n            updateDisplay()\r\n\r\n    def renderText(self):\r\n        lineSurfaces = []\r\n        textLines = self.text.split(\"<br>\")\r\n        maxWidth = 0\r\n        maxHeight = 0\r\n        for line in textLines:\r\n            lineSurfaces.append(self.font.render(line, True, self.fontColour))\r\n            thisRect = lineSurfaces[-1].get_rect()\r\n            if thisRect.width > maxWidth:\r\n                maxWidth = thisRect.width\r\n            if thisRect.height > maxHeight:\r\n                maxHeight = thisRect.height\r\n        self.image = pygame.Surface((maxWidth, (self.fontSize + 1) * len(textLines) + 5), pygame.SRCALPHA, 32)\r\n        self.image.convert_alpha()\r\n        if self.background != \"clear\":\r\n            self.image.fill(parseColour(self.background))\r\n        linePos = 0\r\n        for lineSurface in lineSurfaces:\r\n            self.image.blit(lineSurface, [0, linePos])\r\n            linePos += self.fontSize + 1\r\n        self.rect = self.image.get_rect()\r\n\r\n\r\ndef loadImage(fileName, useColorKey=False):\r\n    if os.path.isfile(fileName):\r\n        image = pygame.image.load(fileName)\r\n        image = image.convert_alpha()\r\n        # Return the image\r\n        return image\r\n    else:\r\n        raise Exception(f\"Error loading image: {fileName} – Check filename and path?\")\r\n\r\n\r\ndef screenSize(sizex, sizey, xpos=None, ypos=None, fullscreen=False):\r\n    global screen\r\n    global background\r\n    if xpos != None and ypos != None:\r\n        os.environ['SDL_VIDEO_WINDOW_POS'] = f\"{xpos}, {ypos + 50}\"\r\n    else:\r\n        windowInfo = pygame.display.Info()\r\n        monitorWidth = windowInfo.current_w\r\n        monitorHeight = windowInfo.current_h\r\n        os.environ['SDL_VIDEO_WINDOW_POS'] = f\"{(monitorWidth - sizex) // 2}, {(monitorHeight - sizey) // 2}\"\r\n    if fullscreen:\r\n        screen = pygame.display.set_mode([sizex, sizey], pygame.FULLSCREEN)\r\n    else:\r\n        screen = pygame.display.set_mode([sizex, sizey])\r\n    background = Background()\r\n    screen.fill(background.colour)\r\n    pygame.display.set_caption(\"Graphics Window\")\r\n    background.surface = screen.copy()\r\n    pygame.display.update()\r\n    return screen\r\n\r\n\r\n\r\ndef moveSprite(sprite, x, y, centre=False):\r\n    sprite.move(x, y, centre)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef rotateSprite(sprite, angle):\r\n    print(\"rotateSprite has been deprecated. Please use transformSprite\")\r\n    transformSprite(sprite, angle, 1)\r\n\r\n\r\ndef transformSprite(sprite, angle, scale, hflip=False, vflip=False):\r\n    oldmiddle = sprite.rect.center\r\n    if hflip or vflip:\r\n        tempImage = pygame.transform.flip(sprite.images[sprite.currentImage], hflip, vflip)\r\n    else:\r\n        tempImage = sprite.images[sprite.currentImage]\r\n    if angle != 0 or scale != 1:\r\n        sprite.angle = angle\r\n        sprite.scale = scale\r\n        tempImage = pygame.transform.rotozoom(tempImage, -angle, scale)\r\n    sprite.image = tempImage\r\n    sprite.rect = sprite.image.get_rect()\r\n    sprite.rect.center = oldmiddle\r\n    sprite.mask = pygame.mask.from_surface(sprite.image)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef killSprite(sprite):\r\n    sprite.kill()\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef setBackgroundColour(colour):\r\n    background.setColour(colour)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef setBackgroundImage(img):\r\n    global background\r\n    background.setTiles(img)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef hideSprite(sprite):\r\n    hiddenSprites.add(sprite)\r\n    spriteGroup.remove(sprite)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef hideAll():\r\n    hiddenSprites.add(spriteGroup.sprites())\r\n    spriteGroup.empty()\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef unhideAll():\r\n    spriteGroup.add(hiddenSprites.sprites())\r\n    hiddenSprites.empty()\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef showSprite(sprite):\r\n    spriteGroup.add(sprite)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef makeSprite(filename, frames=1, altDims = None):\r\n    thisSprite = newSprite(filename, frames, altDims)\r\n    return thisSprite\r\n\r\n\r\ndef addSpriteImage(sprite, image):\r\n    sprite.addImage(image)\r\n\r\n\r\ndef changeSpriteImage(sprite, index):\r\n    sprite.changeImage(index)\r\n\r\n\r\ndef nextSpriteImage(sprite):\r\n    sprite.currentImage += 1\r\n    if sprite.currentImage > len(sprite.images) - 1:\r\n        sprite.currentImage = 0\r\n    sprite.changeImage(sprite.currentImage)\r\n\r\n\r\ndef prevSpriteImage(sprite):\r\n    sprite.currentImage -= 1\r\n    if sprite.currentImage < 0:\r\n        sprite.currentImage = len(sprite.images) - 1\r\n    sprite.changeImage(sprite.currentImage)\r\n\r\n\r\ndef makeImage(filename):\r\n    return loadImage(filename)\r\n\r\n\r\ndef touching(sprite1, sprite2):\r\n    collided = pygame.sprite.collide_mask(sprite1, sprite2)\r\n    return collided\r\n\r\n\r\ndef allTouching(spritename):\r\n    if spriteGroup.has(spritename):\r\n        collisions = pygame.sprite.spritecollide(spritename, spriteGroup, False, collided=pygame.sprite.collide_mask)\r\n        collisions.remove(spritename)\r\n        return collisions\r\n    else:\r\n        return []\r\n\r\n\r\ndef pause(milliseconds, allowEsc=True):\r\n    keys = pygame.key.get_pressed()\r\n    current_time = pygame.time.get_ticks()\r\n    waittime = current_time + milliseconds\r\n    updateDisplay()\r\n    while not (current_time > waittime or (keys[pygame.K_ESCAPE] and allowEsc)):\r\n        pygame.event.clear()\r\n        keys = pygame.key.get_pressed()\r\n        if (keys[pygame.K_ESCAPE] and allowEsc):\r\n            pygame.quit()\r\n            sys.exit()\r\n        current_time = pygame.time.get_ticks()\r\n\r\n\r\ndef drawRect(xpos, ypos, width, height, colour, linewidth=0):\r\n    global bgSurface\r\n    colour = parseColour(colour)\r\n    thisrect = pygame.draw.rect(screen, colour, [xpos, ypos, width, height], linewidth)\r\n    if screenRefresh:\r\n        pygame.display.update(thisrect)\r\n\r\n\r\ndef drawLine(x1, y1, x2, y2, colour, linewidth=1):\r\n    global bgSurface\r\n    colour = parseColour(colour)\r\n    thisrect = pygame.draw.line(screen, colour, (x1, y1), (x2, y2), linewidth)\r\n    if screenRefresh:\r\n        pygame.display.update(thisrect)\r\n\r\n\r\ndef drawPolygon(pointlist, colour, linewidth=0):\r\n    global bgSurface\r\n    colour = parseColour(colour)\r\n    thisrect = pygame.draw.polygon(screen, colour, pointlist, linewidth)\r\n    if screenRefresh:\r\n        pygame.display.update(thisrect)\r\n\r\n\r\ndef drawEllipse(centreX, centreY, width, height, colour, linewidth=0):\r\n    global bgSurface\r\n    colour = parseColour(colour)\r\n    thisrect = pygame.Rect(centreX - width / 2, centreY - height / 2, width, height)\r\n    pygame.draw.ellipse(screen, colour, thisrect, linewidth)\r\n    if screenRefresh:\r\n        pygame.display.update(thisrect)\r\n\r\n\r\ndef drawTriangle(x1, y1, x2, y2, x3, y3, colour, linewidth=0):\r\n    global bgSurface\r\n    colour = parseColour(colour)\r\n    thisrect = pygame.draw.polygon(screen, colour, [(x1, y1), (x2, y2), (x3, y3)], linewidth)\r\n    if screenRefresh:\r\n        pygame.display.update(thisrect)\r\n\r\n\r\ndef clearShapes():\r\n    global background\r\n    screen.blit(background.surface, [0, 0])\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef updateShapes():\r\n    pygame.display.update()\r\n\r\n\r\ndef end():\r\n    pygame.quit()\r\n\r\n\r\ndef makeSound(filename):\r\n    pygame.mixer.init()\r\n    thissound = pygame.mixer.Sound(filename)\r\n\r\n    return thissound\r\n\r\n\r\ndef playSound(sound, loops=0):\r\n    sound.play(loops)\r\n\r\n\r\ndef stopSound(sound):\r\n    sound.stop()\r\n\r\n\r\ndef playSoundAndWait(sound):\r\n    sound.play()\r\n    while pygame.mixer.get_busy():\r\n        # pause\r\n        pause(10)\r\n\r\n\r\ndef makeMusic(filename):\r\n    pygame.mixer.music.load(filename)\r\n\r\n\r\ndef playMusic(loops=0):\r\n    global musicPaused\r\n    if musicPaused:\r\n        pygame.mixer.music.unpause()\r\n    else:\r\n        pygame.mixer.music.play(loops)\r\n    musicPaused = False\r\n\r\n\r\ndef stopMusic():\r\n    pygame.mixer.music.stop()\r\n\r\n\r\ndef pauseMusic():\r\n    global musicPaused\r\n    pygame.mixer.music.pause()\r\n    musicPaused = True\r\n\r\n\r\ndef rewindMusic():\r\n    pygame.mixer.music.rewind()\r\n\r\n\r\ndef endWait():\r\n    updateDisplay()\r\n    print(\"Press ESC to quit\")\r\n    waiting = True\r\n    while waiting:\r\n        for event in pygame.event.get():\r\n            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == keydict[\"esc\"]):\r\n                waiting = False\r\n    pygame.quit()\r\n    exit()\r\n\r\n\r\n\r\ndef keyPressed(keyCheck=\"\"):\r\n    global keydict\r\n    keys = pygame.key.get_pressed()\r\n    if sum(keys) > 0:\r\n        if keyCheck == \"\" or keys[keydict[keyCheck.lower()]]:\r\n            return True\r\n    return False\r\n\r\n\r\ndef makeLabel(text, fontSize, xpos, ypos, fontColour='black', font='Arial', background=\"clear\"):\r\n    # make a text sprite\r\n    thisText = newLabel(text, fontSize, font, fontColour, xpos, ypos, background)\r\n    return thisText\r\n\r\n\r\ndef moveLabel(sprite, x, y):\r\n    sprite.rect.topleft = [x, y]\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef changeLabel(textObject, newText, fontColour=None, background=None):\r\n    textObject.update(newText, fontColour, background)\r\n    # updateDisplay()\r\n\r\n\r\ndef waitPress():\r\n    pygame.event.clear()\r\n    keypressed = False\r\n    thisevent = pygame.event.wait()\r\n    while thisevent.type != pygame.KEYDOWN:\r\n        thisevent = pygame.event.wait()\r\n    return thisevent.key\r\n\r\n\r\ndef makeTextBox(xpos, ypos, width, case=0, startingText=\"Please type here\", maxLength=0, fontSize=22):\r\n    thisTextBox = newTextBox(startingText, xpos, ypos, width, case, maxLength, fontSize)\r\n    textboxGroup.add(thisTextBox)\r\n    return thisTextBox\r\n\r\n\r\ndef textBoxInput(textbox, functionToCall=None, args=[]):\r\n    # starts grabbing key inputs, putting into textbox until enter pressed\r\n    global keydict\r\n    textbox.text = \"\"\r\n    returnVal = None\r\n    while True:\r\n        updateDisplay()\r\n        if functionToCall:\r\n            returnVal = functionToCall(*args)\r\n        for event in pygame.event.get():\r\n            if event.type == pygame.KEYDOWN:\r\n                if event.key == pygame.K_RETURN:\r\n                    textbox.clear()\r\n                    if returnVal:\r\n                        return textbox.text, returnVal\r\n                    else:\r\n                        return textbox.text\r\n                elif event.key == pygame.K_ESCAPE:\r\n                    pygame.quit()\r\n                    sys.exit()\r\n                else:\r\n                    textbox.update(event)\r\n            elif event.type == pygame.QUIT:\r\n                pygame.quit()\r\n                sys.exit()\r\n\r\n\r\ndef clock():\r\n    current_time = pygame.time.get_ticks()\r\n    return current_time\r\n\r\n\r\ndef tick(fps):\r\n    for event in pygame.event.get():\r\n        if (event.type == pygame.KEYDOWN and event.key == keydict[\"esc\"]) or event.type == pygame.QUIT:\r\n            pygame.quit()\r\n            sys.exit()\r\n    gameClock.tick(fps)\r\n    return gameClock.get_fps()\r\n\r\n\r\ndef showLabel(labelName):\r\n    textboxGroup.add(labelName)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef hideLabel(labelName):\r\n    textboxGroup.remove(labelName)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef showTextBox(textBoxName):\r\n    textboxGroup.add(textBoxName)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef hideTextBox(textBoxName):\r\n    textboxGroup.remove(textBoxName)\r\n    if screenRefresh:\r\n        updateDisplay()\r\n\r\n\r\ndef updateDisplay():\r\n    global background\r\n    spriteRects = spriteGroup.draw(screen)\r\n    textboxRects = textboxGroup.draw(screen)\r\n    pygame.display.update()\r\n    keys = pygame.key.get_pressed()\r\n    if (keys[pygame.K_ESCAPE]):\r\n        pygame.quit()\r\n        sys.exit()\r\n    spriteGroup.clear(screen, background.surface)\r\n    textboxGroup.clear(screen, background.surface)\r\n\r\n\r\ndef mousePressed():\r\n    #pygame.event.clear()\r\n    mouseState = pygame.mouse.get_pressed()\r\n    if mouseState[0]:\r\n        return True\r\n    else:\r\n        return False\r\n\r\n\r\ndef spriteClicked(sprite):\r\n    mouseState = pygame.mouse.get_pressed()\r\n    if not mouseState[0]:\r\n        return False  # not pressed\r\n    pos = pygame.mouse.get_pos()\r\n    if sprite.rect.collidepoint(pos):\r\n        return True\r\n    else:\r\n        return False\r\n\r\n\r\ndef parseColour(colour):\r\n    if type(colour) == str:\r\n        # check to see if valid colour\r\n        return pygame.Color(colour)\r\n    else:\r\n        colourRGB = pygame.Color(\"white\")\r\n        colourRGB.r = colour[0]\r\n        colourRGB.g = colour[1]\r\n        colourRGB.b = colour[2]\r\n        return colourRGB\r\n\r\n\r\ndef mouseX():\r\n    x = pygame.mouse.get_pos()\r\n    return x[0]\r\n\r\n\r\ndef mouseY():\r\n    y = pygame.mouse.get_pos()\r\n    return y[1]\r\n\r\n\r\ndef scrollBackground(x, y):\r\n    global background\r\n    background.scroll(x, y)\r\n\r\n\r\ndef setAutoUpdate(val):\r\n    global screenRefresh\r\n    screenRefresh = val\r\n\r\ndef setIcon(iconfile):\r\n    gameicon = pygame.image.load(iconfile)\r\n    pygame.display.set_icon(gameicon)\r\n\r\ndef setWindowTitle(string):\r\n    pygame.display.set_caption(string)\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    print(\"pygame_functions is not designed to be run directly.\\n\" \\\r\n        \"See the wiki at https://github.com/StevePaget/Pygame_Functions/wiki/Getting-Started for more information.\")
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Python/pygame/setup.py b/Python/pygame/setup.py
+--- a/Python/pygame/setup.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/Python/pygame/setup.py	(date 1614376702000)
+@@ -14,18 +14,41 @@
+ 
+ 
+ class Texte:
+-    def __init__(self, text, x, y, color, font, taille):
++    """Pour écrire du texte à l'écran:
++    paramètre:
++        @text: texte à écrire
++        @x : abscisse
++        @y : ordonnée
++        @color : couleur en rgb
++        @font: Police d'écriture A TELECHARGER avant d'utiliser
++        @font_size: taille de la police d'écriture
++    """
++    def __init__(self, text, x, y, color, font, font_size):
+         self.text = text
+         self.x = x
+         self.y = y
+         self.color = color
+-        self.font = pygame.font.SysFont(font, taille)
++        self.font = pygame.font.SysFont(font, font_size)
+ 
+     def write(self, screen):
++        """Injecte le texte à l'écran
++
++        Args:
++            screen (pygae.display): La surface où écrire
++        """
+         screen.blit(self.font.render(self.text, 1, self.color), (self.x, self.y))
+ 
+ 
+ class Center_texte:
++    """Pour écrire du texte à l'écran (CENTRE (x,y) AU MILIEU DU TEXTE):
++    paramètre:
++        @text: texte à écrire
++        @x : abscisse
++        @y : ordonnée
++        @color : couleur en rgb
++        @font: Police d'écriture A TELECHARGER avant d'utiliser
++        @font_size: taille de la police d'écriture
++    """
+     def __init__(self, text, x, y, color, font, taille):
+         self.text = text
+         self.x = x
+@@ -38,25 +61,31 @@
+         text_rect = text.get_rect(center=(self.x, self.y))
+         return text, text_rect
+ 
++    def modifier(self,text):
++        pass
+ 
+ class Button:
+-    def __init__(self, text, x, y, color):
++    def __init__(self, text, x, y, color, width, height):
++        """Dessine un boutton 
++
++        Args:
++            text (str): Le texte affiché sur le bouton
++            x (int): abscisse 
++            y (int): ordonnée 
++            color (tuple): couleur en rgb
++            width (int): largeur
++            height (int): hauteur
++        """
+         self.text = text
+         self.x = x
+         self.y = y
+         self.color = color
+-        self.width = 150
+-        self.height = 100
++        self.width = width
++        self.height = height
+ 
+     def draw(self, screen):
++        """Dessine le bouton à l'écran
+         """
+-        Repenser cette fonction pour directement donner les coordonnée du centre du boutton...
+-
+-
+-        :param screen:
+-        :return:
+-        """
+-
+         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
+         font = pygame.font.SysFont("comicsans", 40)
+         text = font.render(self.text, 1, (255, 255, 255))
+@@ -64,13 +93,7 @@
+                            self.y + round(self.height / 2) - round(text.get_height() / 2)))
+ 
+     def click(self, pos):
+-        """
+-                Repenser cette fonction pour directement donner les coordonnée du centre du boutton...
+ 
+-
+-                :param screen:
+-                :return:
+-        """
+         x1 = pos[0]
+         y1 = pos[1]
+         if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:
+@@ -193,7 +216,7 @@
+ 
+ class Background():
+     def __init__(self):
+-        self.colour = pygame.Color("black")
++        self.colour = pygame.Color("gray")
+ 
+     def setTiles(self, tiles):
+         if type(tiles) is str:
+Index: coords.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\"\"\"\r\n\r\nMe permet de regarder les coordonnés\r\n\"\"\"\r\nimport pygame\r\npygame.font.init()\r\nwhile True:\r\n    pygame.display.set_mode((1080, 720))\r\n    for event in pygame.event.get():\r\n        \"\"\"\r\n        DEBUGG\r\n        Connaitre la position c'est un plus..\r\n        \"\"\"\r\n        if event.type == pygame.MOUSEBUTTONDOWN:\r\n            print(pygame.mouse.get_pos())\r\n\r\n        \"\"\"Ferme le prgm en cas de fermeture de la fenetre.\"\"\"\r\n        if event.type == pygame.QUIT:\r\n            running = False
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/coords.py b/coords.py
+--- a/coords.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/coords.py	(date 1614371346000)
+@@ -16,4 +16,5 @@
+ 
+         """Ferme le prgm en cas de fermeture de la fenetre."""
+         if event.type == pygame.QUIT:
+-            running = False
+\ No newline at end of file
++            running = False
++
+Index: Python/pygame/game.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\n\r\n\r\nclass Game:\r\n    def __init__(self):\r\n        self.start = False\r\n        self.nb_player = 0\r\n        self.max_player = 7\r\n        self.list_player = []\r\n\r\n\r\n    def connect(self,idPlayer):\r\n        self.list_player.append(idPlayer)\r\n\r\n    def connected(self):\r\n        return self.nb_player
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Python/pygame/game.py b/Python/pygame/game.py
+--- a/Python/pygame/game.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/Python/pygame/game.py	(date 1614371248000)
+@@ -1,3 +1,6 @@
++
++
++
+ 
+ 
+ 
+Index: server.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import socket\r\nfrom _thread import *\r\nimport pickle\r\nfrom game import Game\r\n\r\n# local = 192.168.1.27\r\n# server = 193.168.147.3\r\nserver = \"193.168.147.3\"\r\nport = 5555\r\n\r\n\r\n\r\n# bind le port\r\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\r\n\r\ntry:\r\n    s.bind((server, port))\r\nexcept socket.error as e:\r\n    str(e)\r\n\r\ns.listen(2)\r\nprint(\"Pas de connexion, Server ready !\")\r\n\r\nconnected = set()\r\ngames = {}\r\nidCount = 0\r\n\r\n\r\ndef threaded_client(conn, idJoueur, ishost):\r\n    global nbjconnecte\r\n    global host\r\n    running_lobby = True\r\n\r\n    while True:\r\n\r\n        while running_lobby:\r\n            \"\"\"\r\n            On envoie les infos sur la partie.\r\n            \"\"\"\r\n\r\n\r\n            \"\"\"\r\n            On recupere les informations de la partie.\r\n\r\n            \"\"\"\r\n            try:\r\n                print(len(IdJoueurUtilise))\r\n                conn.send(str.encode(str(idJoueur) + \"|\" + str(ishost) + \"|\" + str(len(IdJoueurUtilise))))\r\n                data = conn.recv(4096).decode()\r\n                if not data:\r\n                    break\r\n                else:\r\n                    print(\"data = \" + str(data))\r\n            except:\r\n                print(\"Connexion perdu.\")\r\n                running_lobby = False\r\n\r\n\r\n        \"\"\"\r\n        cas d'une déco.\r\n        \"\"\"\r\n\r\n        if running_lobby == False:\r\n            print(\"Lost connection\")\r\n            IdJoueurUtilise.remove(idJoueur)\r\n            nbjconnecte -= 1\r\n            if hostPlayerId == idJoueur:\r\n                if nbjconnecte>0:\r\n                    hostPlayerId = IdJoueurUtilise[0]\r\n                else:\r\n                    host = False\r\n\r\n            try:\r\n                del games[gameId]\r\n                print(\"Closing Game\", gameId)\r\n            except:\r\n                pass\r\n\r\n            conn.close()\r\n            break\r\n\r\n\r\n\r\nIdJoueurUtilise = []\r\nglobal nbjconnecte\r\nglobal host\r\nglobal hostPlayerId\r\nnbjconnecte = 0\r\nnbjmax = 7\r\nhost = False\r\nwhile True:\r\n    conn, addr = s.accept()\r\n    print(\"Connected to:\", addr)\r\n\r\n    if nbjconnecte == nbjmax:\r\n        conn.send(str.encode(str(\"Error|PlayerLimit\")))\r\n    else:\r\n\r\n        i = 0\r\n        IdJoueur = 0\r\n        while IdJoueur == 0 and i < nbjmax:\r\n            i += 1\r\n            if IdJoueurUtilise.count(i) == 0:\r\n                IdJoueur = i\r\n\r\n        IdJoueurUtilise.append(IdJoueur)\r\n        print(\"Id Joueur = \" + str(IdJoueur))\r\n\r\n        nbjconnecte += 1\r\n\r\n        if host == False:\r\n            ishost = 1\r\n            host = True\r\n            hostPlayerId = IdJoueur\r\n        else:\r\n            ishost = 0\r\n\r\n        start_new_thread(threaded_client, (conn, IdJoueur, ishost))\r\n    print(IdJoueurUtilise)\r\n\"\"\"\r\n    idCount += 1\r\n    p = 0\r\n    gameId = (idCount - 1)//2\r\n    if idCount % 2 == 1:\r\n        games[gameId] = Game(gameId)\r\n        print(\"Creating a new game...\")\r\n    else:\r\n        games[gameId].ready = True\r\n        p = 1\r\n\r\n\r\n    start_new_thread(threaded_client, (conn, p, gameId))\r\n\r\n\r\n\"\"\"\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/server.py b/server.py
+--- a/server.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/server.py	(date 1614379738000)
+@@ -1,15 +1,12 @@
+ import socket
+ from _thread import *
+ import pickle
+-from game import Game
+ 
+ # local = 192.168.1.27
+ # server = 193.168.147.3
+-server = "193.168.147.3"
++server = "192.168.1.27"
+ port = 5555
+ 
+-
+-
+ # bind le port
+ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ 
+@@ -22,101 +19,124 @@
+ print("Pas de connexion, Server ready !")
+ 
+ connected = set()
+-games = {}
+-idCount = 0
+ 
+ 
+ def threaded_client(conn, idJoueur, ishost):
+     global nbjconnecte
++    global hostPlayerId
+     global host
++    global nbjmax
++    global can_connect_server
++    global running_lobby
++    global running_game
+     running_lobby = True
+-
+-    while True:
+-
+-        while running_lobby:
+-            """
+-            On envoie les infos sur la partie.
+-            """
+-
+-
+-            """
+-            On recupere les informations de la partie.
+-
+-            """
+-            try:
+-                print(len(IdJoueurUtilise))
+-                conn.send(str.encode(str(idJoueur) + "|" + str(ishost) + "|" + str(len(IdJoueurUtilise))))
+-                data = conn.recv(4096).decode()
+-                if not data:
+-                    break
+-                else:
+-                    print("data = " + str(data))
+-            except:
+-                print("Connexion perdu.")
+-                running_lobby = False
++    running_game = False
++    while running_lobby:
++        try:
++            data = conn.recv(4096).decode()
++            if not data:
++                break
++            else:
++                if data == "PlayerInfo":
++                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax)))
++
++
++                if data == "StartGame":
++                    conn.send(str.encode("GameStarted"))
++                    running_lobby = False
++                    can_connect_server = False
++                    running_game = True
++
++
++                if data == "IsGameStarted":
++                    conn.send(str.encode(str("No")))
++
++
++
++        except:
++            print("Connexion perdu.")
++            running_lobby = False
++            break
++    if running_game:
++        print("Game start")
++    while running_game:
++
++        try:
++            data = conn.recv(4096).decode()
++            if not data:
++                break
++            else:
++                if data == "IsGameStarted":
++                    conn.send(str.encode(str("Yes")))
++                    print("Yes, game is live!!")
+ 
++                print("data = " + str(data))
++        except:
+ 
++
++            break
+         """
+         cas d'une déco.
+         """
+ 
+-        if running_lobby == False:
++        if running_lobby == False and running_game == False:
+             print("Lost connection")
+             IdJoueurUtilise.remove(idJoueur)
+             nbjconnecte -= 1
+             if hostPlayerId == idJoueur:
+-                if nbjconnecte>0:
++                if nbjconnecte > 0:
+                     hostPlayerId = IdJoueurUtilise[0]
+                 else:
+                     host = False
+ 
+-            try:
+-                del games[gameId]
+-                print("Closing Game", gameId)
+-            except:
+-                pass
++            # del game[idgame]
+ 
+             conn.close()
+             break
+ 
+ 
+-
+ IdJoueurUtilise = []
+ global nbjconnecte
+ global host
+ global hostPlayerId
++can_connect_server = True
+ nbjconnecte = 0
+ nbjmax = 7
+ host = False
+ while True:
+     conn, addr = s.accept()
+-    print("Connected to:", addr)
++    # print("Connected to:", addr)
++    if can_connect_server:
+ 
+-    if nbjconnecte == nbjmax:
+-        conn.send(str.encode(str("Error|PlayerLimit")))
+-    else:
++        if nbjconnecte == nbjmax:
++            conn.send(str.encode(str("Error|PlayerLimit")))
++        else:
+ 
+-        i = 0
+-        IdJoueur = 0
+-        while IdJoueur == 0 and i < nbjmax:
+-            i += 1
+-            if IdJoueurUtilise.count(i) == 0:
+-                IdJoueur = i
++            i = 0
++            IdJoueur = 0
++            while IdJoueur == 0 and i < nbjmax:
++                i += 1
++                if IdJoueurUtilise.count(i) == 0:
++                    IdJoueur = i
+ 
+-        IdJoueurUtilise.append(IdJoueur)
+-        print("Id Joueur = " + str(IdJoueur))
++            IdJoueurUtilise.append(IdJoueur)
++            # print("Id Joueur = " + str(IdJoueur))
+ 
+-        nbjconnecte += 1
++            nbjconnecte += 1
+ 
+-        if host == False:
+-            ishost = 1
+-            host = True
+-            hostPlayerId = IdJoueur
+-        else:
+-            ishost = 0
+-
++            if host == False:
++                ishost = 1
++                host = True
++                hostPlayerId = IdJoueur
++            else:
++                ishost = 0
++                # Etat | player n°| isHost ?
++        conn.send(str.encode(str("Ok|Player" + str(IdJoueur) + "|" + str(ishost))))
+         start_new_thread(threaded_client, (conn, IdJoueur, ishost))
+-    print(IdJoueurUtilise)
++        # print(IdJoueurUtilise)
++    else:
++        conn.send(str.encode(str("Error|Game Already Started")))
++        # error
+ """
+     idCount += 1
+     p = 0
+Index: Python/network/network.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import socket\r\nimport pickle\r\n\r\n\r\nclass Network:\r\n    def __init__(self):\r\n        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\r\n        # local = 192.168.1.27\r\n        # server = 193.168.147.3\r\n        self.server = \"193.168.147.3\"\r\n        self.port = 5555\r\n        self.addr = (self.server, self.port)\r\n        self.p = self.connect()\r\n\r\n    def getP(self):\r\n        return self.p\r\n\r\n\r\n\r\n    def connect(self):\r\n        try:\r\n            self.client.connect(self.addr)\r\n            return self.client.recv(2048).decode()\r\n        except:\r\n            pass\r\n\r\n    def Get(self):\r\n        return self.client.recv(2048).decode()\r\n\r\n    def send(self, data):\r\n        try:\r\n            self.client.send(str.encode(data))\r\n            return pickle.loads(self.client.recv(2048*2))\r\n        except socket.error as e:\r\n            print(e)\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Python/network/network.py b/Python/network/network.py
+--- a/Python/network/network.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/Python/network/network.py	(date 1614374836000)
+@@ -5,9 +5,9 @@
+ class Network:
+     def __init__(self):
+         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-        # local = 192.168.1.27
++        self.server = "192.168.1.27"
+         # server = 193.168.147.3
+-        self.server = "193.168.147.3"
++        #self.server = "193.168.147.3"
+         self.port = 5555
+         self.addr = (self.server, self.port)
+         self.p = self.connect()
+@@ -16,7 +16,6 @@
+         return self.p
+ 
+ 
+-
+     def connect(self):
+         try:
+             self.client.connect(self.addr)
+@@ -24,13 +23,10 @@
+         except:
+             pass
+ 
+-    def Get(self):
+-        return self.client.recv(2048).decode()
+-
+     def send(self, data):
+         try:
+             self.client.send(str.encode(data))
+-            return pickle.loads(self.client.recv(2048*2))
++            return self.client.recv(4096).decode()
+         except socket.error as e:
+             print(e)
+ 
+Index: client.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import pygame\r\nfrom Python.network.network import Network\r\nfrom Python.conf import settings\r\nfrom Python.pygame import setup as f\r\nfrom Python.network import network as n\r\n\r\n\"\"\"\r\nAffichage :\r\n    Menu de chargement \r\n    \r\n    \r\nProcess:\r\n    Verifier les fichiers du jeu\r\n    Download fichié Maj / reinstall si check sum =/= d'habitude? \r\n    Chargement des paramètres de jeu.\r\n    \r\n\"\"\"\r\n\r\n\r\ndef loading():\r\n    # Check intégrité jeu (ac)\r\n    # Download parties du jeu online\r\n    #\r\n    # Si premiere connexion, enregistré pseudo.\r\n    #\r\n    #\r\n    reglages = settings.Settings()\r\n    global window_width\r\n    window_width = reglages.get_window_width()\r\n    global window_height\r\n    window_height = reglages.get_window_height()\r\n    global pseudo\r\n    pseudo = reglages.get_pseudo()\r\n    # Init Pygame\r\n    pygame.font.init()\r\n\r\n\r\ndef reglage():\r\n    screen.fill(0)\r\n    running = True\r\n    while running:\r\n        Fermer = f.Center_texte(\"Y en a pas !\", window_width / 2, window_width * 0.30,\r\n                                (0, 0, 255),\r\n                                \"ComicSansMS\", 40)\r\n        text, text_rect = Fermer.write(screen)\r\n        btn = f.Button_center(\"Menu (retour)\", window_width / 2, window_height *0.6, 200, 70, (255, 155, 0))\r\n        btn.draw(screen)\r\n        screen.blit(text, text_rect)\r\n        pygame.display.flip()\r\n        for event in pygame.event.get():\r\n            \"\"\"Ferme le prgm en cas de fermeture de la fenetre.\"\"\"\r\n            if event.type == pygame.QUIT:\r\n                running = False\r\n            if event.type == pygame.MOUSEBUTTONDOWN:\r\n                pos = pygame.mouse.get_pos()\r\n                if btn.click(pos):\r\n                    running = False\r\n\r\n\r\n\"\"\"\r\nAffichage:\r\n    au milieu bouton de jeu \r\n        pseudo\r\n        \r\n        Solo\r\n        \r\n        Multi\r\n            \r\n            credit défilant.\r\n\r\nprocess:\r\n    wait\r\n\"\"\"\r\n\r\n\r\ndef main_menu():\r\n    screen.fill(0)\r\n    pygame.display.set_caption(\"Menu\")\r\n    draw = 0\r\n    running = True\r\n    while running:\r\n        for event in pygame.event.get():\r\n            \"\"\"Ferme le prgm en cas de fermeture de la fenetre.\"\"\"\r\n            if event.type == pygame.QUIT:\r\n                running = False\r\n        Message_Bienvenue = f.Center_texte(\"Citadelle\".upper(), window_width / 2, window_height * 0.10, (0, 255, 0),\r\n                                           \"ComicSansMS\", 50)\r\n        text, text_rect = Message_Bienvenue.write(screen)\r\n        \"\"\"\r\n        if pseudo == \"\":\r\n            message = \"Entre ton pseudo\"\r\n            pseudo = f.TextBoxInput(Pseudo_InputBox)\r\n        else:\r\n            message = pseudo\r\n        \"\"\"\r\n        Pseudo_InputBox = f.makeTextBox(window_width / 2, window_height * 0.70, 300, 0, \"message\")\r\n        #f.showTextBox(Pseudo_InputBox)\r\n        btns = [f.Button_center(\"Solo\", window_width * 0.2, window_height / 2, 150, 100, (0, 0, 255)),\r\n                f.Button_center(\"Multi\", window_width * 0.8, window_height / 2, 150, 100, (0, 0, 255)),\r\n                f.Button_center(\"reglage\", window_width * 0.9, window_height * 0.9, 150, 100, (0, 0, 0)),\r\n                f.Button_center(\"FERMER\", window_width * 0.9, window_height * 0.1, 150, 100, (0, 0, 0))]\r\n        if draw != True:\r\n\r\n            screen.blit(text, text_rect)\r\n            for btn in btns:\r\n                btn.draw(screen)\r\n\r\n            draw = True\r\n\r\n        pygame.display.flip()\r\n        for event in pygame.event.get():\r\n            \"\"\"\r\n            DEBUGG\r\n            Connaitre la position c'est un plus..\r\n            \"\"\"\r\n            if event.type == pygame.MOUSEMOTION:\r\n                # print(pygame.mouse.get_pos())\r\n                pass\r\n            \"\"\"Ferme le prgm en cas de fermeture de la fenetre.\"\"\"\r\n            if event.type == pygame.QUIT:\r\n                running = False\r\n            if event.type == pygame.MOUSEBUTTONDOWN:\r\n                pos = pygame.mouse.get_pos()\r\n                for btn in btns:\r\n                    if btn.click(pos):\r\n                        running = False\r\n                        clique = btn\r\n\r\n    if clique.text == \"Solo\":\r\n        Solo()\r\n    elif clique.text == \"Multi\":\r\n        Multijoueurs()\r\n    elif clique.text == \"reglage\":\r\n        reglage()\r\n    elif clique.text == \"FERMER\":\r\n        screen.fill(0)\r\n        Fermer = f.Center_texte(\"Merci d'avoir joué !\", window_width / 2, window_width * 0.30,\r\n                                (0, 255, 0),\r\n                                \"ComicSansMS\", 50)\r\n        text, text_rect = Fermer.write(screen)\r\n        screen.blit(text, text_rect)\r\n        pygame.display.flip()\r\n        pygame.time.delay(1500)\r\n        pygame.display.quit()\r\n        quit()\r\n    pass\r\n\r\n\r\n\"\"\"\r\nGestion Mathieu\r\n\"\"\"\r\n\r\n\r\ndef Solo():\r\n    screen.fill(0)\r\n    Fermer = f.Center_texte(\"Bientôt un Solo !\", window_width / 2, window_width * 0.30,\r\n                            (0, 255, 0),\r\n                            \"ComicSansMS\", 50)\r\n    text, text_rect = Fermer.write(screen)\r\n    screen.blit(text, text_rect)\r\n    pygame.display.flip()\r\n    pygame.time.delay(1500)\r\n\r\n\r\n\"\"\"\r\nConception        Mathieu\r\n\r\nGestion Network   Maxime \r\n\r\n\"\"\"\r\n\r\n\r\ndef Multijoueurs():\r\n    print(\"   _   _              _   _       \")\r\n    print(\"  / \\ / \\     _   _  | | | |_  (_)\")\r\n    print(\" /       \\   | | | | | | | __| | |\")\r\n    print(\"/ / \\ / \\ \\  | |_| | | | | |_ || |\")\r\n    print(\"\\ /     \\ /   \\__,_| |_|  \\__| |_|\")\r\n\r\n    pygame.display.set_caption(\"Citadelle | Multijoueurs\")\r\n    screen.fill(1)\r\n    pygame.display.flip()\r\n    running = True\r\n    Network = n.Network()\r\n    answer = Network.getP()\r\n    print(\"result connexion : \"+answer)\r\n    while running:\r\n        pygame.time.delay(1000)\r\n        answer = Network.Get()\r\n        print(f\"srv :{answer}\")\r\n\r\n\r\n\r\n\r\n        for event in pygame.event.get():\r\n            \"\"\"Ferme le prgm en cas de fermeture de la fenetre.\"\"\"\r\n            if event.type == pygame.QUIT:\r\n                running = False\r\n        \"\"\"\r\n        Intérogations serveur : quels sont les serveurs disponible :\r\n        \"\"\"\r\n        \"\"\"\r\n        if PlayerId == \"1\":\r\n            host = True\r\n            f.Center_texte(\"Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !\", window_width / 2, window_width * 0.10,\r\n                           (255, 255, 255),\r\n                           \"ComicSansMS\", 20)\r\n        if changement:\r\n            pygame.display.flip()\r\n        \"\"\"\r\n\r\n\r\n\"\"\"\r\n __  _                _   \r\n/ _\\| |_  __ _  _ __ | |_ \r\n\\ \\ | __|/ _` || '__|| __|\r\n_\\ \\| |_| (_| || |   | |_ \r\n\\__/ \\__|\\__,_||_|    \\__|\r\n\"\"\"\r\nloading()\r\n\r\nscreen = pygame.display.set_mode((window_width, window_height))\r\nwhile True:\r\n    main_menu()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client.py b/client.py
+--- a/client.py	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/client.py	(date 1614379908000)
+@@ -43,7 +43,7 @@
+                                 (0, 0, 255),
+                                 "ComicSansMS", 40)
+         text, text_rect = Fermer.write(screen)
+-        btn = f.Button_center("Menu (retour)", window_width / 2, window_height *0.6, 200, 70, (255, 155, 0))
++        btn = f.Button_center("Menu (retour)", window_width / 2, window_height * 0.6, 200, 70, (255, 155, 0))
+         btn.draw(screen)
+         screen.blit(text, text_rect)
+         pygame.display.flip()
+@@ -94,7 +94,7 @@
+             message = pseudo
+         """
+         Pseudo_InputBox = f.makeTextBox(window_width / 2, window_height * 0.70, 300, 0, "message")
+-        #f.showTextBox(Pseudo_InputBox)
++        # f.showTextBox(Pseudo_InputBox)
+         btns = [f.Button_center("Solo", window_width * 0.2, window_height / 2, 150, 100, (0, 0, 255)),
+                 f.Button_center("Multi", window_width * 0.8, window_height / 2, 150, 100, (0, 0, 255)),
+                 f.Button_center("reglage", window_width * 0.9, window_height * 0.9, 150, 100, (0, 0, 0)),
+@@ -171,44 +171,132 @@
+ 
+ 
+ def Multijoueurs():
++    """
+     print("   _   _              _   _       ")
+     print("  / \ / \     _   _  | | | |_  (_)")
+     print(" /       \   | | | | | | | __| | |")
+     print("/ / \ / \ \  | |_| | | | | |_ || |")
+     print("\ /     \ /   \__,_| |_|  \__| |_|")
+-
++    """
+     pygame.display.set_caption("Citadelle | Multijoueurs")
+-    screen.fill(1)
++    screen.fill(0)
+     pygame.display.flip()
+-    running = True
++    Lobby = True
+     Network = n.Network()
+-    answer = Network.getP()
+-    print("result connexion : "+answer)
+-    while running:
+-        pygame.time.delay(1000)
+-        answer = Network.Get()
+-        print(f"srv :{answer}")
+ 
++    connexion = Network.getP()
++    print(type(connexion))
++    print(connexion)
++    if not connexion :
++        error_message_titre = f.Center_texte(f"ERREUR",
++                                             window_width / 2, window_width * 0.20,
++                                             (255, 0, 0),
++                                             "Arial", 60)
++        error_message = f.Center_texte(f"Nos serveurs rencontres des erreurs.",
++                                       window_width / 2, window_width * 0.30,
++                                       (255, 255, 255),
++                                       "Arial", 20)
++        text, text_rect = error_message_titre.write(screen)
++        screen.blit(text, text_rect)
++        text, text_rect = error_message.write(screen)
++        screen.blit(text, text_rect)
++        pygame.display.flip()
++        pygame.time.delay(2500)
++        main_menu()
++    else:
++        connexion = connexion.split('|')
++    if connexion[0] == "Ok":
++        """
++        Connexion au serveur réussi, vous etes dans la partie.
++        """
++    else:
++        print(connexion[0])
++        print(connexion[1])
++        error_message = f.Center_texte(f"Nous avons rencontré une erreur. {connexion[1]}",
++                                       window_width / 2, window_width * 0.10,
++                                       (255, 255, 255),
++                                       "Arial", 20)
++        error_message.write(screen)
++        screen.blit(text, text_rect)
++        pygame.display.flip()
++        pygame.time.delay(1500)
++        main_menu()
+ 
++    print(f"srv :{connexion}")
++    pseudo = connexion[1]
++    if connexion[2] == "1":
++        """
++        regarde si l'option 2 de connexion est a True, si oui alors le joueur est l'hote de la partie.
++        """
++        host = True
++        host_message = f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !",
++                                      window_width / 2, window_width * 0.10,
++                                      (255, 255, 255),
++                                      "Arial", 20)
++        text, text_rect = host_message.write(screen)
++        screen.blit(text, text_rect)
++        start = f.Button_center("Start", window_width * 0.2, window_height / 2, 150, 100, (0, 255, 0))
++        start.draw(screen)
+ 
++    draw = False
++    Old_nb_joueurs = 0
+ 
++    while Lobby:
+         for event in pygame.event.get():
+             """Ferme le prgm en cas de fermeture de la fenetre."""
+             if event.type == pygame.QUIT:
+                 running = False
+-        """
+-        Intérogations serveur : quels sont les serveurs disponible :
+-        """
+-        """
+-        if PlayerId == "1":
+-            host = True
+-            f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !", window_width / 2, window_width * 0.10,
+-                           (255, 255, 255),
+-                           "ComicSansMS", 20)
+-        if changement:
+-            pygame.display.flip()
+-        """
+-
++            if event.type == pygame.MOUSEBUTTONDOWN and host:
++                pos = pygame.mouse.get_pos()
++                if start.click(pos):
++                    Network.send("StartGame")
++
++
++        if draw == False:
++            pygame.display.flip()
++
++        #pseudo
++        PlayerInfo = Network.send("PlayerInfo").split("|")
++        Nombre_de_joueurs = PlayerInfo[1]
++
++        Nombre_de_joueurs_Max = PlayerInfo[2]
++
++
++
++        if Old_nb_joueurs != Nombre_de_joueurs:
++            if Nombre_de_joueurs == 1:
++                texte = "Joueur : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
++            else:
++                texte = "Joueurs : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
++            Player_Info_Message = f.Center_texte("",
++                                                 window_width * 0.2, window_width * 0.2,
++                                                 (255, 255, 255),
++                                                 "Arial", 15)
++            Player_Info_Message.text = texte
++            Player_Info_Message.modifier(texte)
++            text, text_rect = Player_Info_Message.write(screen)
++
++            screen.blit(text, text_rect)
++            draw = False
++        Old_nb_joueurs = Nombre_de_joueurs
++
++        if Network.send("IsGameStarted") == "Yes":
++            print("lancement de la partie !")
++
++            Lobby = False
++            InGame = True
++
++    while InGame:
++
++        screen.fill(0)
++        InGameMessage = f.Center_texte("",
++                                             window_width * 0.2, window_width * 0.2,
++                                             (255, 255, 255),
++                                             "Arial", 15)
++        InGameMessage.text = "Vous etes en jeux !!\nConnaissez vous les règles ?"
++        text, text_rect = Player_Info_Message.write(screen)
++        screen.blit(text, text_rect)
++        pygame.display.flip()
+ 
+ """
+  __  _                _   
+@@ -222,3 +310,4 @@
+ screen = pygame.display.set_mode((window_width, window_height))
+ while True:
+     main_menu()
++    # Multijoueurs()
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"e60e3411-4b95-4696-baad-6b6d42f5782b\" name=\"Default Changelist\" comment=\"serv\">\r\n      <change afterPath=\"$PROJECT_DIR$/Python/pygame/game.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Python/network/network.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Python/network/network.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/client.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/client.py\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/server.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/server.py\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"1p16JC89O7mvELgyRND7AN0gJ4N\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/coords.py\" />\r\n    <property name=\"restartRequiresConfirmation\" value=\"false\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"vcs.Git\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Python.Client\">\r\n    <configuration name=\"Client\" type=\"PythonConfigurationType\" factoryName=\"Python\" singleton=\"false\">\r\n      <module name=\"GamePy\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"D:\\Bureau\\GamePy\\venv\\Scripts\\python.exe\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/client.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"coords\" type=\"PythonConfigurationType\" factoryName=\"Python\">\r\n      <module name=\"GamePy\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"D:\\Bureau\\GamePy\\venv\\Scripts\\python.exe\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/coords.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"server\" type=\"PythonConfigurationType\" factoryName=\"Python\">\r\n      <module name=\"GamePy\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"D:\\Bureau\\GamePy\\venv\\Scripts\\python.exe\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/server.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Python.Client\" />\r\n      <item itemvalue=\"Python.coords\" />\r\n      <item itemvalue=\"Python.server\" />\r\n    </list>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration>C:\\Users\\pdmtc\\AppData\\Roaming\\Subversion</configuration>\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"e60e3411-4b95-4696-baad-6b6d42f5782b\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1614338175757</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1614338175757</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Commit de base\">\r\n      <created>1614351778352</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614351778352</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur.\">\r\n      <created>1614361168853</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614361168853</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Mod network localhost 127.0.0.1\">\r\n      <created>1614362627919</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614362627919</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"mod path\">\r\n      <created>1614362838505</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614362838505</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"serv\">\r\n      <created>1614363391487</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614363391487</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"serv\">\r\n      <created>1614363574741</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1614363574741</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"7\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Commit de base\" />\r\n    <MESSAGE value=\"Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur.\" />\r\n    <MESSAGE value=\"Mod network localhost 127.0.0.1\" />\r\n    <MESSAGE value=\"mod path\" />\r\n    <MESSAGE value=\"serv\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"serv\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision a84840b0dfcdf7140a9285e7bf5a19e317e06829)
++++ b/.idea/workspace.xml	(date 1614379188000)
+@@ -2,11 +2,390 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="serv">
+-      <change afterPath="$PROJECT_DIR$/Python/pygame/game.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/GamePy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GamePy.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Python/conf/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/conf/settings.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/Python/network/network.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/network/network.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Python/pygame/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/pygame/game.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Python/pygame/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/pygame/setup.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/coords.py" beforeDir="false" afterPath="$PROJECT_DIR$/coords.py" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-21.0.1.dist-info/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip-21.0.1.dist-info/LICENSE.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-21.0.1.dist-info/RECORD" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip-21.0.1.dist-info/RECORD" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/__main__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/build_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/build_env.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/autocompletion.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/autocompletion.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/base_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/base_command.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/cmdoptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/cmdoptions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/command_context.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/command_context.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/main.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/main_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/main_parser.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/parser.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/progress_bars.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/progress_bars.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/req_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/req_command.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/spinners.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/spinners.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/status_codes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/cli/status_codes.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/check.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/check.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/completion.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/completion.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/configuration.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/configuration.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/debug.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/debug.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/download.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/download.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/freeze.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/freeze.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/hash.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/hash.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/help.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/install.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/install.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/list.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/list.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/search.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/show.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/show.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/uninstall.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/uninstall.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/commands/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/configuration.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/configuration.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/installed.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/installed.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/sdist.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/sdist.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/distributions/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/exceptions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/collector.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/package_finder.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/index/package_finder.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/locations.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/locations.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/main.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/candidate.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/candidate.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/direct_url.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/direct_url.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/format_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/format_control.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/index.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/link.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/link.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/scheme.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/scheme.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/search_scope.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/search_scope.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/selection_prefs.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/selection_prefs.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/target_python.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/target_python.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/models/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/auth.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/download.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/download.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/lazy_wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/lazy_wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/session.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/session.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/utils.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/xmlrpc.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/network/xmlrpc.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/metadata.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/metadata.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/metadata_legacy.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/metadata_legacy.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/wheel_legacy.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/build/wheel_legacy.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/check.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/check.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/freeze.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/freeze.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/editable_legacy.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/editable_legacy.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/legacy.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/legacy.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/install/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/prepare.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/operations/prepare.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/pyproject.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/pyproject.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/constructors.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/constructors.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_file.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_install.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_install.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_set.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_set.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_tracker.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_tracker.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_uninstall.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/req/req_uninstall.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/legacy/resolver.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/legacy/resolver.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/candidates.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/candidates.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/factory.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/provider.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/provider.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/reporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/reporter.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/requirements.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/requirements.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/resolver.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/resolution/resolvelib/resolver.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/self_outdated_check.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/self_outdated_check.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/appdirs.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/appdirs.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/compatibility_tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/compatibility_tags.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/datetime.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/datetime.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/deprecation.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/deprecation.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/direct_url_helpers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/direct_url_helpers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/distutils_args.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/distutils_args.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/encoding.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/encoding.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/entrypoints.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/entrypoints.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/filesystem.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/filesystem.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/filetypes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/filetypes.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/glibc.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/glibc.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/hashes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/hashes.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/inject_securetransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/inject_securetransport.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/logging.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/misc.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/models.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/packaging.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/packaging.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/parallel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/pkg_resources.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/pkg_resources.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/setuptools_build.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/setuptools_build.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/subprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/subprocess.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/temp_dir.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/temp_dir.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/typing.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/typing.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/unpacking.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/unpacking.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/urls.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/virtualenv.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/virtualenv.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/utils/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/bazaar.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/bazaar.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/git.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/git.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/mercurial.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/mercurial.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/subversion.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/subversion.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/versioncontrol.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/vcs/versioncontrol.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/wheel_builder.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_internal/wheel_builder.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/appdirs.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/appdirs.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/_cmd.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/_cmd.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/adapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/adapter.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/file_cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/file_cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/redis_cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/caches/redis_cache.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/controller.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/filewrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/filewrapper.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/heuristics.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/heuristics.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/serialize.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/serialize.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/cachecontrol/wrapper.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/__main__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/certifi/core.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/big5freq.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/big5freq.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/big5prober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/big5prober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/chardistribution.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/chardistribution.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/charsetgroupprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/charsetgroupprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/charsetprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/charsetprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cli/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cli/chardetect.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cli/chardetect.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/codingstatemachine.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/codingstatemachine.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cp949prober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/cp949prober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/enums.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/enums.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/escprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/escprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/escsm.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/escsm.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/eucjpprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/eucjpprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euckrfreq.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euckrfreq.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euckrprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euckrprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euctwfreq.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euctwfreq.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euctwprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/euctwprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/gb2312freq.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/gb2312freq.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/gb2312prober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/gb2312prober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/hebrewprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/hebrewprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/jisfreq.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/jisfreq.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/jpcntx.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/jpcntx.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langbulgarianmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langbulgarianmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langgreekmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langgreekmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langhebrewmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langhebrewmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langhungarianmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langhungarianmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langrussianmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langrussianmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langthaimodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langthaimodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langturkishmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/langturkishmodel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/latin1prober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/latin1prober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcharsetprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcharsetprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcsgroupprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcsgroupprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcssm.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/mbcssm.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/metadata/languages.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/metadata/languages.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sbcharsetprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sbcharsetprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sbcsgroupprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sbcsgroupprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sjisprober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/sjisprober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/universaldetector.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/universaldetector.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/utf8prober.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/utf8prober.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/chardet/version.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/ansi.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/ansi.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/ansitowin32.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/ansitowin32.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/initialise.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/initialise.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/win32.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/win32.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/winterm.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/colorama/winterm.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/contextlib2.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/contextlib2.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/misc.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/shutil.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/shutil.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/sysconfig.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/sysconfig.cfg" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/sysconfig.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/sysconfig.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/tarfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/_backport/tarfile.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/database.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/index.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/index.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/locators.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/locators.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/manifest.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/manifest.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/markers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/markers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/metadata.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/metadata.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/resources.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/resources.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/scripts.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/scripts.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/util.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/version.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distlib/wheel.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distro.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/distro.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_ihatexml.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_ihatexml.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_inputstream.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_inputstream.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_tokenizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_tokenizer.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/_base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/py.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_trie/py.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/_utils.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/constants.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/alphabeticalattributes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/alphabeticalattributes.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/inject_meta_charset.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/inject_meta_charset.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/lint.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/optionaltags.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/optionaltags.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/sanitizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/sanitizer.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/whitespace.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/filters/whitespace.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/html5parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/html5parser.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/serializer.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/serializer.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/genshi.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/genshi.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/sax.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treeadapters/sax.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/dom.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/dom.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/etree.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/etree.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/etree_lxml.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treebuilders/etree_lxml.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/base.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/dom.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/dom.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/etree.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/etree.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/etree_lxml.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/etree_lxml.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/genshi.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/html5lib/treewalkers/genshi.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/codec.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/codec.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/core.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/idnadata.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/idnadata.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/intranges.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/intranges.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/package_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/package_data.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/uts46data.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/idna/uts46data.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/_version.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/exceptions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/ext.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/ext.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/fallback.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/msgpack/fallback.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/__about__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/__about__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_structures.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_structures.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_typing.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/_typing.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/markers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/markers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/requirements.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/requirements.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/specifiers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/specifiers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/tags.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/utils.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/version.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/packaging/version.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/_in_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/_in_process.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/build.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/build.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/check.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/check.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/colorlog.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/colorlog.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/dirtools.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/dirtools.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/envbuild.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/envbuild.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/meta.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/meta.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pep517/wrappers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pkg_resources/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pkg_resources/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pkg_resources/py31compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pkg_resources/py31compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/bar.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/bar.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/counter.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/spinner.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/progress/spinner.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pyparsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/pyparsing.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/__version__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/__version__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/_internal_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/_internal_utils.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/adapters.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/adapters.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/api.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/auth.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/certs.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/certs.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/compat.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/compat.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/cookies.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/cookies.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/exceptions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/help.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/help.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/hooks.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/hooks.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/models.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/packages.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/packages.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/sessions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/sessions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/status_codes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/status_codes.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/structures.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/structures.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/requests/utils.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/compat/collections_abc.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/compat/collections_abc.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/providers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/providers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/reporters.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/reporters.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/resolvers.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/resolvers.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/structs.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/resolvelib/structs.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/retrying.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/retrying.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/six.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/six.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/decoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/decoder.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/encoder.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/ordered.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/ordered.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/tz.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/toml/tz.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/_collections.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/_collections.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/_version.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/_version.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/connection.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/connectionpool.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/connectionpool.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_appengine_environ.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_appengine_environ.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_securetransport/bindings.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_securetransport/bindings.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_securetransport/low_level.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/_securetransport/low_level.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/appengine.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/appengine.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/ntlmpool.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/ntlmpool.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/pyopenssl.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/pyopenssl.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/securetransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/securetransport.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/socks.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/contrib/socks.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/exceptions.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/fields.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/fields.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/filepost.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/filepost.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/backports/makefile.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/backports/makefile.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/six.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/six.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/_implementation.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/packages/ssl_match_hostname/_implementation.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/poolmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/poolmanager.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/request.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/request.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/response.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/connection.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/proxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/proxy.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/queue.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/queue.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/request.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/request.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/response.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/retry.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/retry.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/ssl_.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/ssl_.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/ssltransport.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/ssltransport.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/timeout.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/timeout.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/url.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/url.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/wait.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/urllib3/util/wait.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/vendor.txt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/vendor.txt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/__init__.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/labels.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/labels.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/mklabels.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/mklabels.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/tests.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/x_user_defined.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pip/_vendor/webencodings/x_user_defined.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pkg_resources/_vendor/pyparsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pkg_resources/_vendor/pyparsing.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-53.1.0.dist-info/RECORD" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-53.1.0.dist-info/RECORD" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools/_vendor/pyparsing.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools/_vendor/pyparsing.py" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Scripts/Activate.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/Activate.ps1" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Scripts/activate" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/activate" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Scripts/activate.bat" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/activate.bat" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/Scripts/deactivate.bat" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Scripts/deactivate.bat" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -19,9 +398,13 @@
+         <option value="Python Script" />
+       </list>
+     </option>
++  </component>
++  <component name="Git.Merge.Settings">
++    <option name="BRANCH" value="origin/master" />
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="UPDATE_TYPE" value="REBASE" />
+   </component>
+   <component name="ProjectId" id="1p16JC89O7mvELgyRND7AN0gJ4N" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+@@ -147,21 +530,7 @@
+       <option name="project" value="LOCAL" />
+       <updated>1614362838505</updated>
+     </task>
+-    <task id="LOCAL-00005" summary="serv">
+-      <created>1614363391487</created>
+-      <option name="number" value="00005" />
+-      <option name="presentableId" value="LOCAL-00005" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1614363391487</updated>
+-    </task>
+-    <task id="LOCAL-00006" summary="serv">
+-      <created>1614363574741</created>
+-      <option name="number" value="00006" />
+-      <option name="presentableId" value="LOCAL-00006" />
+-      <option name="project" value="LOCAL" />
+-      <updated>1614363574741</updated>
+-    </task>
+-    <option name="localTasksCounter" value="7" />
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -174,13 +543,13 @@
+         </entry>
+       </map>
+     </option>
++    <option name="oldMeFiltersMigrated" value="true" />
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="Commit de base" />
+     <MESSAGE value="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur." />
+     <MESSAGE value="Mod network localhost 127.0.0.1" />
+     <MESSAGE value="mod path" />
+-    <MESSAGE value="serv" />
+-    <option name="LAST_COMMIT_MESSAGE" value="serv" />
++    <option name="LAST_COMMIT_MESSAGE" value="mod path" />
+   </component>
+ </project>
+\ No newline at end of file
