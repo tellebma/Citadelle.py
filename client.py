@@ -43,7 +43,7 @@ def reglage():
                                 (0, 0, 255),
                                 "ComicSansMS", 40)
         text, text_rect = Fermer.write(screen)
-        btn = f.Button_center("Menu (retour)", window_width / 2, window_height *0.6, 200, 70, (255, 155, 0))
+        btn = f.Button_center("Menu (retour)", window_width / 2, window_height * 0.6, 200, 70, (255, 155, 0))
         btn.draw(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
@@ -171,16 +171,17 @@ Gestion Network   Maxime
 
 
 def Multijoueurs():
+    """
     print("   _   _              _   _       ")
     print("  / \ / \     _   _  | | | |_  (_)")
     print(" /       \   | | | | | | | __| | |")
     print("/ / \ / \ \  | |_| | | | | |_ || |")
     print("\ /     \ /   \__,_| |_|  \__| |_|")
-
+    """
     pygame.display.set_caption("Citadelle | Multijoueurs")
-    screen.fill(1)
+    screen.fill(0)
     pygame.display.flip()
-    running = True
+    Lobby = True
     Network = n.Network()
     answer = Network.getP()
     print("result connexion : "+answer)
@@ -189,26 +190,119 @@ def Multijoueurs():
         answer = Network.Get()
         print(f"srv :{answer}")
 
+    connexion = Network.getP()
+    print(type(connexion))
+    print(connexion)
+    if not connexion :
+        error_message_titre = f.Center_texte(f"ERREUR",
+                                             window_width / 2, window_width * 0.20,
+                                             (255, 0, 0),
+                                             "Arial", 60)
+        error_message = f.Center_texte(f"Nos serveurs rencontres des erreurs.",
+                                       window_width / 2, window_width * 0.30,
+                                       (255, 255, 255),
+                                       "Arial", 20)
+        text, text_rect = error_message_titre.write(screen)
+        screen.blit(text, text_rect)
+        text, text_rect = error_message.write(screen)
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.time.delay(2500)
+        main_menu()
+    else:
+        connexion = connexion.split('|')
+    if connexion[0] == "Ok":
+        """
+        Connexion au serveur réussi, vous etes dans la partie.
+        """
+    else:
+        print(connexion[0])
+        print(connexion[1])
+        error_message = f.Center_texte(f"Nous avons rencontré une erreur. {connexion[1]}",
+                                       window_width / 2, window_width * 0.10,
+                                       (255, 255, 255),
+                                       "Arial", 20)
+        error_message.write(screen)
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+        pygame.time.delay(1500)
+        main_menu()
 
+    print(f"srv :{connexion}")
+    pseudo = connexion[1]
+    if connexion[2] == "1":
+        """
+        regarde si l'option 2 de connexion est a True, si oui alors le joueur est l'hote de la partie.
+        """
+        host = True
+        host_message = f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !",
+                                      window_width / 2, window_width * 0.10,
+                                      (255, 255, 255),
+                                      "Arial", 20)
+        text, text_rect = host_message.write(screen)
+        screen.blit(text, text_rect)
+        start = f.Button_center("Start", window_width * 0.2, window_height / 2, 150, 100, (0, 255, 0))
+        start.draw(screen)
 
+    draw = False
+    Old_nb_joueurs = 0
 
+    while Lobby:
         for event in pygame.event.get():
             """Ferme le prgm en cas de fermeture de la fenetre."""
             if event.type == pygame.QUIT:
                 running = False
-        """
-        Intérogations serveur : quels sont les serveurs disponible :
-        """
-        """
-        if PlayerId == "1":
-            host = True
-            f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !", window_width / 2, window_width * 0.10,
-                           (255, 255, 255),
-                           "ComicSansMS", 20)
-        if changement:
-            pygame.display.flip()
-        """
+            if event.type == pygame.MOUSEBUTTONDOWN and host:
+                pos = pygame.mouse.get_pos()
+                if start.click(pos):
+                    Network.send("StartGame")
 
+
+        if draw == False:
+            pygame.display.flip()
+
+        #pseudo
+        PlayerInfo = Network.send("PlayerInfo").split("|")
+        Nombre_de_joueurs = PlayerInfo[1]
+
+        Nombre_de_joueurs_Max = PlayerInfo[2]
+
+
+
+        if Old_nb_joueurs != Nombre_de_joueurs:
+            if Nombre_de_joueurs == 1:
+                texte = "Joueur : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
+            else:
+                texte = "Joueurs : " + str(Nombre_de_joueurs) + " / " + str(Nombre_de_joueurs_Max)
+            Player_Info_Message = f.Center_texte("",
+                                                 window_width * 0.2, window_width * 0.2,
+                                                 (255, 255, 255),
+                                                 "Arial", 15)
+            Player_Info_Message.text = texte
+            Player_Info_Message.modifier(texte)
+            text, text_rect = Player_Info_Message.write(screen)
+
+            screen.blit(text, text_rect)
+            draw = False
+        Old_nb_joueurs = Nombre_de_joueurs
+
+        if Network.send("IsGameStarted") == "Yes":
+            print("lancement de la partie !")
+
+            Lobby = False
+            InGame = True
+
+    while InGame:
+
+        screen.fill(0)
+        InGameMessage = f.Center_texte("",
+                                             window_width * 0.2, window_width * 0.2,
+                                             (255, 255, 255),
+                                             "Arial", 15)
+        InGameMessage.text = "Vous etes en jeux !!\nConnaissez vous les règles ?"
+        text, text_rect = Player_Info_Message.write(screen)
+        screen.blit(text, text_rect)
+        pygame.display.flip()
 
 """
  __  _                _   

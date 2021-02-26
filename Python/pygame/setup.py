@@ -38,6 +38,9 @@ class Center_texte:
         text_rect = text.get_rect(center=(self.x, self.y))
         return text, text_rect
 
+    def modifier(self, texte):
+        self.text = texte
+        return
 
 class Button:
     def __init__(self, text, x, y, color):
@@ -111,6 +114,8 @@ class Button_center:
         text = font.render(self.text, 1, (255, 255, 255))
         screen.blit(text, (self.x + round(self.width / 2) - round(text.get_width() / 2),
                            self.y + round(self.height / 2) - round(text.get_height() / 2)))
+
+
 
     def click(self, pos):
         """
