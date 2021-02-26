@@ -9,48 +9,6 @@ server = "193.168.147.3"
 port = 5555
 
 
-class Server:
-    def __init__(self, id, port):
-        self.id = id
-        self.port = port
-        self.hote = self.get_hote(self)
-        """
-        int: 3 état:
-        0 éteint
-        1 allumé - lobby
-        2 allumé - partie en cours
-        """
-        self.etat = 0
-
-    def start(self):
-        self.etat = 1
-        try:
-            s.bind((server, port))
-        except socket.error as e:
-            str(e)
-            self.etat = 0
-        return self.etat
-
-    def get_joueurs(self):
-        """
-        retourne une liste avec les joueurs
-
-        :return:
-        retourne la liste des joueurs.
-        """
-        return ["Bob"]
-
-    def get_host(self):
-        """
-        Définit qui est l'hote de la partie.
-
-        :return:
-        retourne le premier joueurs de la liste.
-        """
-        joueurs = self.get_joueurs()
-        self.hote = joueurs[0]
-        return joueurs[0]
-
 
 # bind le port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

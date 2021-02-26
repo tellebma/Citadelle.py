@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="mod path">
+    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="serv">
+      <change afterPath="$PROJECT_DIR$/Python/pygame/game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Python/network/network.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/network/network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -144,7 +147,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614362838505</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="serv">
+      <created>1614363391487</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1614363391487</updated>
+    </task>
+    <task id="LOCAL-00006" summary="serv">
+      <created>1614363574741</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1614363574741</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -163,6 +180,7 @@
     <MESSAGE value="Ajout fichier coords.py, permet de voir les coordonnés sur les fenetres &#10;Modifs server : &#10;    Systeme d'id de joueur." />
     <MESSAGE value="Mod network localhost 127.0.0.1" />
     <MESSAGE value="mod path" />
-    <option name="LAST_COMMIT_MESSAGE" value="mod path" />
+    <MESSAGE value="serv" />
+    <option name="LAST_COMMIT_MESSAGE" value="serv" />
   </component>
 </project>

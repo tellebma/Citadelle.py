@@ -24,6 +24,9 @@ class Network:
         except:
             pass
 
+    def Get(self):
+        return self.client.recv(2048).decode()
+
     def send(self, data):
         try:
             self.client.send(str.encode(data))
