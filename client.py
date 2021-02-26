@@ -182,10 +182,20 @@ def Multijoueurs():
     pygame.display.flip()
     running = True
     Network = n.Network()
-
+    answer = ""
+    prev_answer = ""
     while running:
-        test = Network.getP()
-        print(test)
+        pygame.time.delay(200)
+        if not answer:
+            pass
+        else:
+            prev_answer = answer
+        if prev_answer != answer:
+            print("srv :" + answer)
+        answer = Network.getP()
+
+
+
         for event in pygame.event.get():
             """Ferme le prgm en cas de fermeture de la fenetre."""
             if event.type == pygame.QUIT:
@@ -193,8 +203,15 @@ def Multijoueurs():
         """
         Intérogations serveur : quels sont les serveurs disponible :
         """
-
-
+        """
+        if PlayerId == "1":
+            host = True
+            f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !", window_width / 2, window_width * 0.10,
+                           (255, 255, 255),
+                           "ComicSansMS", 20)
+        if changement:
+            pygame.display.flip()
+        """
 
 
 """
