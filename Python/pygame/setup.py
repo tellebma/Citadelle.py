@@ -14,18 +14,41 @@ os.chdir(DIR)
 
 
 class Texte:
-    def __init__(self, text, x, y, color, font, taille):
+    """Pour écrire du texte à l'écran:
+    paramètre:
+        @text: texte à écrire
+        @x : abscisse
+        @y : ordonnée
+        @color : couleur en rgb
+        @font: Police d'écriture A TELECHARGER avant d'utiliser
+        @font_size: taille de la police d'écriture
+    """
+    def __init__(self, text, x, y, color, font, font_size):
         self.text = text
         self.x = x
         self.y = y
         self.color = color
-        self.font = pygame.font.SysFont(font, taille)
+        self.font = pygame.font.SysFont(font, font_size)
 
     def write(self, screen):
+        """Injecte le texte à l'écran
+
+        Args:
+            screen (pygae.display): La surface où écrire
+        """
         screen.blit(self.font.render(self.text, 1, self.color), (self.x, self.y))
 
 
 class Center_texte:
+    """Pour écrire du texte à l'écran (CENTRE (x,y) AU MILIEU DU TEXTE):
+    paramètre:
+        @text: texte à écrire
+        @x : abscisse
+        @y : ordonnée
+        @color : couleur en rgb
+        @font: Police d'écriture A TELECHARGER avant d'utiliser
+        @font_size: taille de la police d'écriture
+    """
     def __init__(self, text, x, y, color, font, taille):
         self.text = text
         self.x = x
@@ -43,23 +66,27 @@ class Center_texte:
         return
 
 class Button:
-    def __init__(self, text, x, y, color):
+    def __init__(self, text, x, y, color, width, height):
+        """Dessine un boutton 
+
+        Args:
+            text (str): Le texte affiché sur le bouton
+            x (int): abscisse 
+            y (int): ordonnée 
+            color (tuple): couleur en rgb
+            width (int): largeur
+            height (int): hauteur
+        """
         self.text = text
         self.x = x
         self.y = y
         self.color = color
-        self.width = 150
-        self.height = 100
+        self.width = width
+        self.height = height
 
     def draw(self, screen):
+        """Dessine le bouton à l'écran
         """
-        Repenser cette fonction pour directement donner les coordonnée du centre du boutton...
-
-
-        :param screen:
-        :return:
-        """
-
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
         font = pygame.font.SysFont("comicsans", 40)
         text = font.render(self.text, 1, (255, 255, 255))
@@ -67,13 +94,7 @@ class Button:
                            self.y + round(self.height / 2) - round(text.get_height() / 2)))
 
     def click(self, pos):
-        """
-                Repenser cette fonction pour directement donner les coordonnée du centre du boutton...
 
-
-                :param screen:
-                :return:
-        """
         x1 = pos[0]
         y1 = pos[1]
         if self.x <= x1 <= self.x + self.width and self.y <= y1 <= self.y + self.height:
@@ -198,7 +219,7 @@ screen = ""
 
 class Background():
     def __init__(self):
-        self.colour = pygame.Color("black")
+        self.colour = pygame.Color("gray")
 
     def setTiles(self, tiles):
         if type(tiles) is str:
