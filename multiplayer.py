@@ -73,11 +73,11 @@ class Multiplayer:
         :return: text, text_rect
         """
         error_message_titre = f.Center_texte(f"ERREUR",
-                                             self.window_width / 2, self.window_width * 0.20,
+                                             self.main_menu.screen.get_width() / 2, self.main_menu.screen.get_height() * 0.20,
                                              (255, 0, 0),
                                              "Arial", 60)
         error_message = f.Center_texte(f"{message}",
-                                       self.window_width / 2, self.window_width * 0.30,
+                                       self.main_menu.screen.get_width() / 2, self.main_menu.screen.get_height() * 0.30,
                                        (255, 255, 255),
                                        "Arial", 20)
         text, text_rect = error_message_titre.write(self.screen)
