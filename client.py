@@ -1,8 +1,11 @@
 import pygame
+
 from Python.network.network import Network
-from Python.conf import settings
+from Python.conf.settings import Settings
 from Python.pygame import setup as f
-from Python.network import network as n
+
+from main_menu import MainMenu
+
 from Python.pygame.card_building import CardBuilding
 
 """
@@ -18,22 +21,22 @@ Process:
 """
 
 
-def loading():
+"""def loading():
     # Check intégrité jeu (ac)
     # Download parties du jeu online
     #
     # Si premiere connexion, enregistré pseudo.
     #
     #
-    reglages = settings.Settings()
+    settings = Settings()
     global window_width
-    window_width = reglages.get_window_width()
+    window_width = settings.get_window_width()
     global window_height
-    window_height = reglages.get_window_height()
+    window_height = settings.get_window_height()
     global pseudo
-    pseudo = reglages.get_pseudo()
+    pseudo = settings.get_pseudo()
     # Init Pygame
-    pygame.font.init()
+    pygame.font.init()"""
 
 
 def reglage():
@@ -171,14 +174,14 @@ Gestion Network   Maxime
 """
 
 
-def Multijoueurs():
-    """
+"""def Multijoueurs():
+    
     print("   _   _              _   _       ")
     print("  / \ / \     _   _  | | | |_  (_)")
     print(" /       \   | | | | | | | __| | |")
     print("/ / \ / \ \  | |_| | | | | |_ || |")
     print("\ /     \ /   \__,_| |_|  \__| |_|")
-    """
+    
     pygame.display.set_caption("Citadelle | Multijoueurs")
     screen.fill(0)
     pygame.display.flip()
@@ -207,9 +210,7 @@ def Multijoueurs():
     else:
         connexion = connexion.split('|')
     if connexion[0] == "Ok":
-        """
-        Connexion au serveur réussi, vous etes dans la partie.
-        """
+        print("ok")
     else:
         print(connexion[0])
         print(connexion[1])
@@ -226,9 +227,9 @@ def Multijoueurs():
     print(f"srv :{connexion}")
     pseudo = connexion[1]
     if connexion[2] == "1":
-        """
-        regarde si l'option 2 de connexion est a True, si oui alors le joueur est l'hote de la partie.
-        """
+        
+        #regarde si l'option 2 de connexion est a True, si oui alors le joueur est l'hote de la partie.
+        
         host = True
         host_message = f.Center_texte("Vous êtes l'hote, c'est vous qui règler les paramètres de la partie !",
                                       window_width / 2, window_width * 0.10,
@@ -244,7 +245,7 @@ def Multijoueurs():
 
     while Lobby:
         for event in pygame.event.get():
-            """Ferme le prgm en cas de fermeture de la fenetre."""
+            """"""Ferme le prgm en cas de fermeture de la fenetre.""""""
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and host:
@@ -297,15 +298,15 @@ def Multijoueurs():
                                              window_width * 0.2, window_width * 0.2,
                                              (255, 255, 255),
                                              "Arial", 15)
-        InGameMessage.text = "Vous etes en jeux !!\nConnaissez vous les règles ?"
-        text, text_rect = Player_Info_Message.write(screen)
+        InGameMessage.text = "Vous etes en jeux !! \n Connaissez vous les règles ?"
+        text, text_rect = InGameMessage.write(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
         ### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
         card_temple = CardBuilding("temple")
         card_church = CardBuilding("church")
         screen.blit(card_temple.image,(0,0))
-        screen.blit(card_church.image,(212,0))
+        screen.blit(card_church.image,(212,0))"""
 """
  __  _                _   
 / _\| |_  __ _  _ __ | |_ 
@@ -313,9 +314,11 @@ def Multijoueurs():
 _\ \| |_| (_| || |   | |_ 
 \__/ \__|\__,_||_|    \__|
 """
-loading()
 
-screen = pygame.display.set_mode((window_width, window_height))
+
+
+main_menu = MainMenu()
 while True:
-    main_menu()
-    # Multijoueurs()
+    #main_menu()
+    main_menu.start()
+    
