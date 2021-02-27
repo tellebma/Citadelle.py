@@ -25,9 +25,13 @@ class Multiplayer:
         pygame.display.flip()
 
         # PARTIE
+        self.host = 0
         self.lobby = False
         self.ingame = False
         # self.pseudo
+        self.nb_player = 1
+        self.player_id = 1
+        self.player_ids = []
 
         # RESEAU
         self.network = Network()
@@ -52,14 +56,12 @@ class Multiplayer:
         if self.verify_connexion():
             print(f"srv :{self.connexion}")
             self.pseudo = self.connexion[1]
-            if self.check_if_host():
-                self.create_button_start()
             self.lobby = True
             self.in_lobby()
             self.ingame = True
             self.in_game()
         else:
-            self.main_menu
+            pass
 
     def error_message(self, message):
         """
@@ -73,7 +75,8 @@ class Multiplayer:
         :return: text, text_rect
         """
         error_message_titre = f.Center_texte(f"ERREUR",
-                                             self.main_menu.screen.get_width() / 2, self.main_menu.screen.get_height() * 0.20,
+                                             self.main_menu.screen.get_width() / 2,
+                                             self.main_menu.screen.get_height() * 0.20,
                                              (255, 0, 0),
                                              "Arial", 60)
         error_message = f.Center_texte(f"{message}",
@@ -105,12 +108,15 @@ class Multiplayer:
                 """
                 Connexion au serveur réussi, vous etes dans la partie.
                 """
+                self.player_id = self.connexion[1]
                 return True
             else:
                 print(self.connexion[0])
                 print(self.connexion[1])
-                self.error_message(f"Nous avons rencontré une erreur. {self.connexion[1]}")
-                pygame.time.delay(1500)
+                text, text_rect = self.error_message(f"Nous avons rencontré une erreur. {self.connexion[1]}")
+                self.screen.blit(text, text_rect)
+                pygame.display.flip()
+                pygame.time.delay(2500)
                 self.main_menu.start()
                 return False
 
@@ -125,21 +131,21 @@ class Multiplayer:
             """
             self.host = True
             host_message = f.Center_texte("Vous êtes l'hote, c'est vous qui parametrez la partie !",
-                                          self.window_width / 2, self.window_width * 0.10,
+                                          self.main_menu.screen.get_width() / 2,
+                                          self.main_menu.screen.get_height() * 0.10,
                                           (255, 255, 255),
                                           "Arial", 20)
-            text, text_rect = host_message.write(self.screen)
-            self.screen.blit(text, text_rect)
+            text, text_rect = host_message.write(self.main_menu.screen)
+            self.main_menu.screen.blit(text, text_rect)
         return self.host
 
-    def create_button_start(self):
+    #def create_button_start(self):
         """
 
         :return: retourne le boutton. (pour detecter les clicks;)
         """
-        start = f.Button_center("Start", self.window_width * 0.2, self.window_height / 2, 150, 100, (0, 255, 0))
-        start.draw(self.screen)
-        return start
+
+    #    #return start
 
     def in_lobby(self):
         """
@@ -156,6 +162,9 @@ class Multiplayer:
         """
         draw = False
         old_nb_joueurs = 0
+        # NE FONCTIONNE PAS
+        #affichage_player_nb = f.makeLabel("test", 15, self.window_width * 0.2, self.window_height * 0.2, "yellow")
+        #f.showLabel(affichage_player_nb)
         while self.lobby:
             for event in pygame.event.get():
                 """Ferme le prgm en cas de fermeture de la fenetre."""
@@ -165,54 +174,78 @@ class Multiplayer:
                     pos = pygame.mouse.get_pos()
                     if start.click(pos):
                         self.network.send("StartGame")
-
+            if not self.host:
+                if self.check_if_host():
+                    #On creer le boutton.
+                    start = f.Button_center("Start", self.main_menu.screen.get_width() * 0.2,
+                                            self.main_menu.screen.get_height() / 2, 150, 100, (0, 255, 0))
+                    start.draw(self.main_menu.screen)
+                    draw = False
             if draw == False:
+
                 pygame.display.flip()
+
+                draw = True
+
 
             # pseudo
             player_info = self.network.send("PlayerInfo")
+            print(player_info)
+            #player info :
+            #
+            #"PlayerId|nbjoueurconnecte|nbjoueurmax|listJoueurConnecte"
             if player_info == "erreur":
                 print(player_info)
             else:
                 player_info = player_info.split("|")
-                nombre_de_joueurs = player_info[1]
+                self.nb_player = player_info[1]
 
                 nombre_de_joueurs_Max = player_info[2]
 
-                if old_nb_joueurs != nombre_de_joueurs:
-                    if nombre_de_joueurs == 1:
-                        texte = "Joueur : " + str(nombre_de_joueurs) + " / " + str(nombre_de_joueurs_Max)
-                    else:
-                        texte = "Joueurs : " + str(nombre_de_joueurs) + " / " + str(nombre_de_joueurs_Max)
+                if old_nb_joueurs != self.nb_player:
+                    texte = "Joueurs : " + str(self.nb_player) + " / " + str(nombre_de_joueurs_Max)
                     player_Info_Message = f.Center_texte("",
-                                                         self.window_width * 0.2, self.window_height * 0.2,
+                                                         self.main_menu.screen.get_width() * 0.2, self.main_menu.screen.get_height() * 0.2,
                                                          (255, 255, 255),
                                                          "Arial", 15)
                     player_Info_Message.text = texte
-                    player_Info_Message.modifier(texte)
                     text, text_rect = player_Info_Message.write(self.screen)
-
                     self.screen.blit(text, text_rect)
+                    pygame.display.update(text_rect)
+
+
+
                     draw = False
-                old_nb_joueurs = nombre_de_joueurs
+
+                    #NE FONCTIONNE PAS
+                    #f.changeLabel(affichage_player_nb,"Joueurs : " + str(self.nb_player) + " / " + str(nombre_de_joueurs_Max), "white")
+
+                old_nb_joueurs = self.nb_player
 
             if self.network.send("IsGameStarted") == "Yes":
                 print("lancement de la partie !")
-
-                lobby = False
-                inGame = True
+                print(f"Il y a {self.nb_player} joueurs")
+                self.lobby = False
+                self.inGame = True
+                self.in_game()
 
     def in_game(self):
+        draw = False
         while self.ingame:
-            self.main_menu.screen.fill(0)
-            in_Game_Message = f.Center_texte("",
-                                             self.window_width * 0.2, self.window_height * 0.2,
-                                             (255, 255, 255),
-                                             "Arial", 15)
-            in_Game_Message.text = "Vous etes en jeux !! <br> Connaissez vous les règles ?"
-            text, text_rect = in_Game_Message.write(self.main_menu.screen)
-            self.main_menu.screen.blit(text, text_rect)
-            pygame.display.flip()
+            if draw == False:
+                self.main_menu.screen.fill(0)
+                in_Game_Message = f.Center_texte("Vous etes en jeux !! Connaissez vous les règles ?",
+                                                 self.main_menu.screen.get_width() * 0.2, self.self.main_menu.screen.get_height() * 0.2,
+                                                 (255, 255, 255),
+                                                 "Arial", 15)
+                text, text_rect = in_Game_Message.write(self.main_menu.screen)
+                self.main_menu.screen.blit(text, text_rect)
+                pygame.display.flip()
+            f.pause(1000)
+
+
+
+
             """### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
             card_temple = CardBuilding("temple")
             card_church = CardBuilding("church")

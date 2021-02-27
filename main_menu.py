@@ -55,6 +55,9 @@ class MainMenu():
         """
         Lancer l'ouverture du jeu,
         """
+        self.screen.fill(0)
+        self.draw = False
+        self.running = True
         self.loading()
         while self.running:
             for event in pygame.event.get():

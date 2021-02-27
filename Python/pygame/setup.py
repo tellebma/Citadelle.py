@@ -50,20 +50,20 @@ class Center_texte:
         @font_size: taille de la police d'écriture
     """
     def __init__(self, text, x, y, color, font, taille):
-        self.text = text
+        self.texte = text
         self.x = x
         self.y = y
         self.color = color
         self.font = pygame.font.SysFont(font, taille)
 
     def write(self, screen):
-        text = self.font.render(self.text, 1, self.color)
+        text = self.font.render(self.texte, 1, self.color)
         text_rect = text.get_rect(center=(self.x, self.y))
         return text, text_rect
 
     def modifier(self, texte):
-        self.text = texte
-        return
+        self.texte = texte
+
 
 class Button:
     def __init__(self, text, x, y, color, width, height):

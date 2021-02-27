@@ -66,15 +66,14 @@ def threaded_client(conn, idJoueur, ishost):
             if not data:
                 break
             else:
-                if data == "IsGameStarted":
+                if data == "PlayerInfo":
+                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax)+"|"+str(IdJoueurUtilise)))
+                elif data == "IsGameStarted":
                     conn.send(str.encode(str("Yes")))
                     print("Yes, game is live!!")
                 else:
                     conn.send(str.encode(str("erreur")))
-
         except:
-
-
             break
         """
         cas d'une déco.
