@@ -38,7 +38,7 @@ Process:
     # Init Pygame
     pygame.font.init()"""
 
-
+"""
 def reglage():
     screen.fill(0)
     running = True
@@ -52,7 +52,8 @@ def reglage():
         screen.blit(text, text_rect)
         pygame.display.flip()
         for event in pygame.event.get():
-            """Ferme le prgm en cas de fermeture de la fenetre."""
+            """#Ferme le prgm en cas de fermeture de la fenetre.
+"""
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -60,7 +61,7 @@ def reglage():
                 if btn.click(pos):
                     running = False
 
-
+"""
 """
 Affichage:
     au milieu bouton de jeu 
@@ -298,16 +299,16 @@ Gestion Network   Maxime
                                              window_width * 0.2, window_width * 0.2,
                                              (255, 255, 255),
                                              "Arial", 15)
-        InGameMessage.text = "Vous etes en jeux !! \n Connaissez vous les règles ?"
-        text, text_rect = InGameMessage.write(screen)
+        InGameMessage.text = "Vous etes en jeux !!\nConnaissez vous les règles ?"
+        text, text_rect = Player_Info_Message.write(screen)
         screen.blit(text, text_rect)
         pygame.display.flip()
         ### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
         card_temple = CardBuilding("temple")
         card_church = CardBuilding("church")
         screen.blit(card_temple.image,(0,0))
-        screen.blit(card_church.image,(212,0))"""
-"""
+        screen.blit(card_church.image,(212,0))
+
  __  _                _   
 / _\| |_  __ _  _ __ | |_ 
 \ \ | __|/ _` || '__|| __|
@@ -321,4 +322,4 @@ main_menu = MainMenu()
 while True:
     #main_menu()
     main_menu.start()
-    
+
