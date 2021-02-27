@@ -8,7 +8,17 @@ from Python.conf.settings import Settings
 
 
 class MainMenu():
+    """
+    Menu principale du jeu,
 
+        Solo / Multijoueur
+        Fermer
+        Reglages
+
+    fenetre pygame
+
+    Classe principale du script.
+    """
     def __init__(self):
 
         self.settings = Settings()
@@ -22,13 +32,16 @@ class MainMenu():
         self.running = True
     
     def loading(self):
+        """
         # Check intégrité jeu (ac)
         # Download parties du jeu online
         #
         # Si premiere connexion, enregistré pseudo.
         #
         #
-        
+
+        """
+
         
         self.window_width = self.settings.get_window_width()
         
@@ -39,6 +52,9 @@ class MainMenu():
         pygame.font.init()
 
     def start(self):
+        """
+        Lancer l'ouverture du jeu,
+        """
         self.loading()
         while self.running:
             for event in pygame.event.get():

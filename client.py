@@ -8,6 +8,7 @@ from main_menu import MainMenu
 
 from Python.pygame.card_building import CardBuilding
 
+#ANCIEN CODE
 """
 Affichage :
     Menu de chargement 
@@ -18,10 +19,7 @@ Process:
     Download fichié Maj / reinstall si check sum =/= d'habitude? 
     Chargement des paramètres de jeu.
     
-"""
-
-
-"""def loading():
+def loading():
     # Check intégrité jeu (ac)
     # Download parties du jeu online
     #
@@ -36,9 +34,8 @@ Process:
     global pseudo
     pseudo = settings.get_pseudo()
     # Init Pygame
-    pygame.font.init()"""
-
-"""
+    pygame.font.init()
+    
 def reglage():
     screen.fill(0)
     running = True
@@ -52,8 +49,6 @@ def reglage():
         screen.blit(text, text_rect)
         pygame.display.flip()
         for event in pygame.event.get():
-            """#Ferme le prgm en cas de fermeture de la fenetre.
-"""
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -61,8 +56,6 @@ def reglage():
                 if btn.click(pos):
                     running = False
 
-"""
-"""
 Affichage:
     au milieu bouton de jeu 
         pseudo
@@ -75,7 +68,7 @@ Affichage:
 
 process:
     wait
-"""
+
 
 
 def main_menu():
@@ -85,19 +78,16 @@ def main_menu():
     running = True
     while running:
         for event in pygame.event.get():
-            """Ferme le prgm en cas de fermeture de la fenetre."""
             if event.type == pygame.QUIT:
                 running = False
         Message_Bienvenue = f.Center_texte("Citadelle".upper(), window_width / 2, window_height * 0.10, (0, 255, 0),
                                            "ARIAL", 50)
         text, text_rect = Message_Bienvenue.write(screen)
-        """
         if pseudo == "":
             message = "Entre ton pseudo"
             pseudo = f.TextBoxInput(Pseudo_InputBox)
         else:
             message = pseudo
-        """
         Pseudo_InputBox = f.makeTextBox(window_width / 2, window_height * 0.70, 300, 0, "message")
         #f.showTextBox(Pseudo_InputBox)
         btns = [f.Button_center("Solo", window_width * 0.2, window_height / 2, 150, 100, (0, 0, 255)),
@@ -114,14 +104,11 @@ def main_menu():
 
         pygame.display.flip()
         for event in pygame.event.get():
-            """
-            DEBUGG
-            Connaitre la position c'est un plus..
-            """
+
             if event.type == pygame.MOUSEMOTION:
                 # print(pygame.mouse.get_pos())
                 pass
-            """Ferme le prgm en cas de fermeture de la fenetre."""
+
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -151,9 +138,7 @@ def main_menu():
     pass
 
 
-"""
-Gestion Mathieu
-"""
+
 
 
 def Solo():
@@ -167,15 +152,8 @@ def Solo():
     pygame.time.delay(1500)
 
 
-"""
-Conception        Mathieu
 
-Gestion Network   Maxime 
-
-"""
-
-
-"""def Multijoueurs():
+def Multijoueurs():
     
     print("   _   _              _   _       ")
     print("  / \ / \     _   _  | | | |_  (_)")
@@ -246,7 +224,7 @@ Gestion Network   Maxime
 
     while Lobby:
         for event in pygame.event.get():
-            """"""Ferme le prgm en cas de fermeture de la fenetre.""""""
+            
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN and host:
@@ -309,12 +287,12 @@ Gestion Network   Maxime
         screen.blit(card_temple.image,(0,0))
         screen.blit(card_church.image,(212,0))
 
- __  _                _   
-/ _\| |_  __ _  _ __ | |_ 
-\ \ | __|/ _` || '__|| __|
-_\ \| |_| (_| || |   | |_ 
-\__/ \__|\__,_||_|    \__|
-"""
+     __  _                _   
+    / _\| |_  __ _  _ __ | |_ 
+    \ \ | __|/ _` || '__|| __|
+    _\ \| |_| (_| || |   | |_ 
+    \__/ \__|\__,_||_|    \__|
+    """
 
 
 

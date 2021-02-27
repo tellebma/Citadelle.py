@@ -4,13 +4,13 @@ from Python.network.network import Network
 from Python.pygame import setup as f
 from Python.conf.settings import Settings
 
+
 class Multiplayer:
     """
-    print("   _   _              _   _       ")
-    print("  / \ / \     _   _  | | | |_  (_)")
-    print(" /       \   | | | | | | | __| | |")
-    print("/ / \ / \ \  | |_| | | | | |_ || |")
-    print("\ /     \ /   \__,_| |_|  \__| |_|")
+        Classe du mode multijoueur,
+        établie la connexion avec le serveur,
+        gère toute la partie client serveur.
+        cf : server.py
     """
 
     def __init__(self, screen, main_menu):
@@ -25,7 +25,7 @@ class Multiplayer:
         pygame.display.flip()
 
         # PARTIE
-        self.lobby = True
+        self.lobby = False
         self.ingame = False
         # self.pseudo
 
@@ -41,13 +41,25 @@ class Multiplayer:
         print(self.connexion)
 
     def start(self):
-        self.verify_connexion()
-        print(f"srv :{self.connexion}")
-        self.pseudo = self.connexion[1]
-        if self.check_if_host():
-            self.create_button_start()
-        self.in_lobby()
-        self.in_game()
+        """
+        Fonction qui permet de lancer le multi sur un client.
+        """
+        print("   _   _              _   _       ")
+        print("  / \ / \     _   _  | | | |_  (_)")
+        print(" /       \   | | | | | | | __| | |")
+        print("/ / \ / \ \  | |_| | | | | |_ || |")
+        print("\ /     \ /   \__,_| |_|  \__| |_|")
+        if self.verify_connexion():
+            print(f"srv :{self.connexion}")
+            self.pseudo = self.connexion[1]
+            if self.check_if_host():
+                self.create_button_start()
+            self.lobby = True
+            self.in_lobby()
+            self.ingame = True
+            self.in_game()
+        else:
+            self.main_menu
 
     def error_message(self, message):
         """
@@ -76,26 +88,31 @@ class Multiplayer:
     def verify_connexion(self):
         """
         regarde si la connexion au serveur est possible.
-        :return: nothing
+        :return: True Ok , False Nok
         """
-        if not self.connexion:
+        if not self.connexion or self.connexion is None:
             text, text_rect = self.error_message("Connexion avec le serveur non établie ! #E0001")
             self.screen.blit(text, text_rect)
             pygame.display.flip()
             pygame.time.delay(2500)
             self.main_menu.start()
+            return False
+
         else:
             self.connexion = self.connexion.split('|')
-        if self.connexion[0] == "Ok":
-            """
-            Connexion au serveur réussi, vous etes dans la partie.
-            """
-        else:
-            print(self.connexion[0])
-            print(self.connexion[1])
-            self.error_message(f"Nous avons rencontré une erreur. {self.connexion[1]}")
-            pygame.time.delay(1500)
-            self.main_menu.start()
+
+            if self.connexion[0] == "Ok":
+                """
+                Connexion au serveur réussi, vous etes dans la partie.
+                """
+                return True
+            else:
+                print(self.connexion[0])
+                print(self.connexion[1])
+                self.error_message(f"Nous avons rencontré une erreur. {self.connexion[1]}")
+                pygame.time.delay(1500)
+                self.main_menu.start()
+                return False
 
     def check_if_host(self):
         """
@@ -125,6 +142,18 @@ class Multiplayer:
         return start
 
     def in_lobby(self):
+        """
+        Fonction a faire tourner dans le lobby,
+
+        envoie régulièrement des demandes au serveur, sur :
+
+        le nombre de joueur
+        TODO Les nom des joueurs
+        L'id du joueur, si il est l'host ou non etc.
+        à completer.
+
+        :return:
+        """
         draw = False
         old_nb_joueurs = 0
         while self.lobby:
