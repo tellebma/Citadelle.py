@@ -1,4 +1,5 @@
 import pygame
+import ast  # lib transform str to dict.
 
 from Python.network.network import Network
 from Python.pygame import setup as f
@@ -32,6 +33,7 @@ class Multiplayer:
         self.nb_player = 1
         self.player_id = 1
         self.player_ids = []
+        self.hostid = 1
 
         # RESEAU
         self.network = Network()
@@ -56,7 +58,7 @@ class Multiplayer:
         print("\ /     \ /   \__,_| |_|  \__| |_|")
         if self.verify_connexion():
             print(f"srv :{self.connexion}")
-            #self.pseudo = self.connexion[1]
+            # self.pseudo = self.connexion[1]
             self.lobby = True
             self.in_lobby()
             self.ingame = True
@@ -109,7 +111,6 @@ class Multiplayer:
                 """
                 Connexion au serveur réussi, vous etes dans la partie.
                 """
-                self.player_id = self.connexion[1]
                 return True
             else:
                 print(self.connexion[0])
@@ -157,6 +158,7 @@ class Multiplayer:
         """
         draw = False
         old_nb_joueurs = 0
+        oldplayer_ids = 0
         while self.lobby:
             for event in pygame.event.get():
                 """Ferme le prgm en cas de fermeture de la fenetre."""
@@ -170,6 +172,18 @@ class Multiplayer:
             if not self.host:
                 self.check_if_host()
 
+            # TODO pseudo
+            if not self.isIdentifie:
+                player_info = self.network.send("PlayerInfo")
+                if player_info != "erreur":
+                    self.player_id = int(player_info.split('|')[0])
+
+                    print(self.pseudo[int(self.player_id)])
+                    identification = self.network.send(f"Id|{str(self.pseudo[int(self.player_id) - 1])}")
+                    # print(identification)
+                    if identification == "Ok":
+                        self.isIdentifie = True
+
             player_info = self.network.send("PlayerInfo")
             print(player_info)
             # player info :
@@ -179,30 +193,25 @@ class Multiplayer:
                 print(f"erreur lors de la requete PlayerInfo : {player_info}")
             else:
                 player_info = player_info.split("|")
-                #print("============================")
-                #for val in player_info:
+                # print("============================")
+                # for val in player_info:
                 #    print(f"informations recu : {val} | {type(val)}")
-                #print("============================")
+                # print("============================")
 
                 self.nb_player = player_info[1]
 
                 nombre_de_joueurs_Max = player_info[2]
                 self.player_id = int(player_info[0])
-                self.player_ids = player_info[2]
-
+                self.player_ids = ast.literal_eval(player_info[4])
+                self.hostid = int(player_info[3])
                 print(f"Joueurs : {self.nb_player} / {nombre_de_joueurs_Max}")
 
-                if old_nb_joueurs != self.nb_player:
+                if old_nb_joueurs != self.nb_player or oldplayer_ids != self.player_ids:
                     draw = False
                     old_nb_joueurs = self.nb_player
+                    oldplayer_ids = self.player_ids
 
-                # TODO pseudo
-                if not self.isIdentifie:
-                    print(self.pseudo[int(self.player_id-1)])
-                    identification = self.network.send(f"Id|{self.pseudo[self.player_id]}")
-                    #print(identification)
-                    if identification == "Ok":
-                        self.isIdentifie = True
+
 
                 if draw == False:
                     self.screen.fill(0)
@@ -216,7 +225,7 @@ class Multiplayer:
                                                       "Arial", 20)
                         text, text_rect = host_message.write(self.main_menu.screen)
                         self.main_menu.screen.blit(text, text_rect)
-                        # On creer le boutton.
+                        # On creer le boutton de démarrage..
                         start = f.Button_center("Start", self.main_menu.screen.get_width() * 0.2,
                                                 self.main_menu.screen.get_height() / 2, 150, 100, (0, 255, 0))
                         start.draw(self.main_menu.screen)
@@ -233,6 +242,38 @@ class Multiplayer:
                     # Texte pour tout le monde:
                     # TODO afficher les noms des jouerus connecté, Host avec étoile  joueur client pseudo en bleu !
                     # affichage du nb de joueur connecté:
+                    posX = self.main_menu.screen.get_width() * 0.7
+                    poxY = self.main_menu.screen.get_height() * 0.3
+
+                    PlayerList = f.Texte(f"Liste des joueurs connectés :",
+                                         posX,
+                                         poxY,
+                                         (255, 255, 255),
+                                         "Arial", 18)
+                    PlayerList.write(self.screen)
+                    #self.screen.blit(text, text_rect)
+                    """
+                    pos init = 
+                    """
+                    poxY += 25
+                    for i in self.player_ids:
+                        poxY += 18
+                        print(i, "=> ", self.player_ids[i])
+                        texte = f"{i}      {self.player_ids[i]}"
+                        color = (255, 255, 255)
+                        if i == self.hostid:
+                            texte = f"{i}      {self.player_ids[i]}   ♦"
+                            color = (255, 255, 255)
+                        if i == self.player_id:
+                            color = (255, 0, 0)
+                        PlayerList = f.Texte(texte,
+                                             posX,
+                                             poxY,
+                                             color,
+                                             "Arial", 15)
+                        PlayerList.write(self.screen)
+
+
                     texte = "Joueurs : " + str(self.nb_player) + " / " + str(nombre_de_joueurs_Max)
                     player_Info_Message = f.Center_texte(texte,
                                                          self.main_menu.screen.get_width() * 0.2,
