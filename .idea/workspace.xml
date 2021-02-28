@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="correction bug client / server &#10;boutton start game work,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Python/pygame/card_building.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/pygame/card_building.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiplayer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <list id="46420329-9fbf-4e69-a5aa-c7c310ad2612" name="serv" comment="serv&#10;&#10;(cherry picked from commit d30a0b3f72cb9993aaa0da228441fe4f1fa6e363)">
       <changelist_data name="tellebma" email="pdmtc.bellet@gmail.com" date="1614363574000" />
@@ -29,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -251,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614450595770</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Ajout Identification sur le serveur, le srveur a la liste des utilisateur dans un dictionnaire, cle = id value = pseudo la gestion des pseudo coté client ne fonctionne pas, generation auto de pseudo...reglage texte qui se réécrive dessus, réécriture de la calsse multiplayer, réorganisation coté draw.">
+      <created>1614472090179</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1614472090179</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,6 +293,7 @@
     <MESSAGE value="Modif, correct bug" />
     <MESSAGE value="self" />
     <MESSAGE value="correction bug client / server &#10;boutton start game work," />
-    <option name="LAST_COMMIT_MESSAGE" value="correction bug client / server &#10;boutton start game work," />
+    <MESSAGE value="Ajout Identification sur le serveur, le srveur a la liste des utilisateur dans un dictionnaire, cle = id value = pseudo la gestion des pseudo coté client ne fonctionne pas, generation auto de pseudo...reglage texte qui se réécrive dessus, réécriture de la calsse multiplayer, réorganisation coté draw." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajout Identification sur le serveur, le srveur a la liste des utilisateur dans un dictionnaire, cle = id value = pseudo la gestion des pseudo coté client ne fonctionne pas, generation auto de pseudo...reglage texte qui se réécrive dessus, réécriture de la calsse multiplayer, réorganisation coté draw." />
   </component>
 </project>

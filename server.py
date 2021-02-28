@@ -40,7 +40,7 @@ def threaded_client(conn, idJoueur, ishost):
             else:
                 if data == "PlayerInfo":
                     conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax) + "|" + str(
-                        IdJoueurUtilise) + "|" + str(hostPlayerId) + "|" + str(dictionnairePlayerId)))
+                        IdJoueurUtilise) + "|" + str(hostPlayerId)+ "|" + str(dictionnairePlayerId)))
 
                 elif data == "StartGame":
                     conn.send(str.encode("GameStarted"))

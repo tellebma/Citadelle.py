@@ -198,7 +198,7 @@ class Multiplayer:
 
                 # TODO pseudo
                 if not self.isIdentifie:
-                    print(self.pseudo[int(self.player_id)])
+                    print(self.pseudo[int(self.player_id-1)])
                     identification = self.network.send(f"Id|{self.pseudo[self.player_id]}")
                     #print(identification)
                     if identification == "Ok":
@@ -263,13 +263,13 @@ class Multiplayer:
                 self.main_menu.screen.fill(0)
                 in_Game_Message = f.Center_texte("Vous etes en jeux !! Connaissez vous les règles ?",
                                                  self.main_menu.screen.get_width() * 0.2,
-                                                 self.self.main_menu.screen.get_height() * 0.2,
+                                                 self.main_menu.screen.get_height() * 0.2,
                                                  (255, 255, 255),
                                                  "Arial", 15)
                 text, text_rect = in_Game_Message.write(self.main_menu.screen)
                 self.main_menu.screen.blit(text, text_rect)
                 pygame.display.flip()
-            f.pause(1000)
+            pass
 
             """### AFFICHAGE EXPERIMENTAL DES CARTES BATIMENTS
             card_temple = CardBuilding("temple")
