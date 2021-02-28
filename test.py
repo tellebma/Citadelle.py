@@ -1,15 +1,10 @@
-from Python.pygame import setup as f
+"""
 
-f.screenSize(750, 750)
+def makeTextBox(xpos, ypos, width, case=0, startingText="Please type here", maxLength=0, fontSize=22):
+    thisTextBox = newTextBox(startingText, xpos, ypos, width, case, maxLength, fontSize)
+    textboxGroup.add(thisTextBox)
+    return thisTextBox
 
-fuelColour = "yellow"
-fuelLabel = f.makeLabel("Fuel: 50", 28, 10, 10, fuelColour)
-f.showLabel(fuelLabel)
 
 
-fuel = 0
-
-while True:
-    fuel += 1
-    f.changeLabel(fuelLabel, "Fuel: " + str(int(fuel)), fuelColour)  # Update the label
-
+"""

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="self">
+    <list default="true" id="e60e3411-4b95-4696-baad-6b6d42f5782b" name="Default Changelist" comment="correction bug client / server &#10;boutton start game work,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Python/pygame/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/pygame/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Python/pygame/card_building.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python/pygame/card_building.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_menu.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_menu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/multiplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/multiplayer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <list id="46420329-9fbf-4e69-a5aa-c7c310ad2612" name="serv" comment="serv&#10;&#10;(cherry picked from commit d30a0b3f72cb9993aaa0da228441fe4f1fa6e363)">
       <changelist_data name="tellebma" email="pdmtc.bellet@gmail.com" date="1614363574000" />
@@ -28,7 +29,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -37,6 +37,9 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python39/Lib/site-packages/pygame/sprite.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1p16JC89O7mvELgyRND7AN0gJ4N" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -51,6 +54,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/coords.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="ReaderModeSettings">
+    <option name="enabled" value="false" />
   </component>
   <component name="RunManager" selected="Python.Client">
     <configuration name="Client" type="PythonConfigurationType" factoryName="Python" singleton="false">
@@ -231,7 +237,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614441838282</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="correction bug client / server &#10;boutton start game work,">
+      <created>1614450549481</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1614450549481</updated>
+    </task>
+    <task id="LOCAL-00012" summary="correction bug client / server &#10;boutton start game work,">
+      <created>1614450595770</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1614450595770</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -267,17 +287,7 @@
     <MESSAGE value="qq modifs ajout commentaire/ modif Multiplayer, ajout self manquant etc" />
     <MESSAGE value="Modif, correct bug" />
     <MESSAGE value="self" />
-    <option name="LAST_COMMIT_MESSAGE" value="self" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/multiplayer.py</url>
-          <line>46</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="correction bug client / server &#10;boutton start game work," />
+    <option name="LAST_COMMIT_MESSAGE" value="correction bug client / server &#10;boutton start game work," />
   </component>
 </project>

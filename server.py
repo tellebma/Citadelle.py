@@ -29,6 +29,7 @@ def threaded_client(conn, idJoueur, ishost):
     global can_connect_server
     global running_lobby
     global running_game
+    global dictionnairePlayerId
     running_lobby = True
     running_game = False
     while running_lobby:
@@ -38,7 +39,8 @@ def threaded_client(conn, idJoueur, ishost):
                 break
             else:
                 if data == "PlayerInfo":
-                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax)))
+                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax) + "|" + str(
+                        IdJoueurUtilise) + "|" + str(hostPlayerId) + "|" + str(dictionnairePlayerId)))
 
                 elif data == "StartGame":
                     conn.send(str.encode("GameStarted"))
@@ -48,6 +50,13 @@ def threaded_client(conn, idJoueur, ishost):
 
                 elif data == "IsGameStarted":
                     conn.send(str.encode(str("No")))
+                elif data.count('|') != 0:
+                    if data.split('|')[0] == 'Id':
+                        pseudo_player = data.split('|')[1]
+                        # idJoueur
+                        dictionnairePlayerId[idJoueur] = pseudo_player
+                        print(dictionnairePlayerId)
+                        conn.send(str.encode("Ok"))
                 else:
                     conn.send(str.encode(str("erreur")))
 
@@ -67,7 +76,8 @@ def threaded_client(conn, idJoueur, ishost):
                 break
             else:
                 if data == "PlayerInfo":
-                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax)+"|"+str(IdJoueurUtilise)))
+                    conn.send(str.encode(str(idJoueur) + "|" + str(nbjconnecte) + "|" + str(nbjmax) + "|" + str(
+                        IdJoueurUtilise) + "|" + str(hostPlayerId)))
                 elif data == "IsGameStarted":
                     conn.send(str.encode(str("Yes")))
                     print("Yes, game is live!!")
@@ -82,6 +92,7 @@ def threaded_client(conn, idJoueur, ishost):
         if running_lobby == False and running_game == False:
             print("Lost connection")
             IdJoueurUtilise.remove(idJoueur)
+            del dictionnairePlayerId[idJoueur]
             nbjconnecte -= 1
             if hostPlayerId == idJoueur:
                 if nbjconnecte > 0:
@@ -95,6 +106,7 @@ def threaded_client(conn, idJoueur, ishost):
             break
 
 
+dictionnairePlayerId = {}
 IdJoueurUtilise = []
 global nbjconnecte
 global host

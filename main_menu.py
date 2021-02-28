@@ -1,7 +1,7 @@
 import pygame
 
 from Python.pygame import setup as f
-from solo import Solo 
+from solo import Solo
 from multiplayer import Multiplayer
 from reglage_menu import ReglageMenu
 from Python.conf.settings import Settings
@@ -19,6 +19,7 @@ class MainMenu():
 
     Classe principale du script.
     """
+
     def __init__(self):
 
         self.settings = Settings()
@@ -30,7 +31,7 @@ class MainMenu():
         pygame.display.set_caption("Menu")
         self.draw = False
         self.running = True
-    
+
     def loading(self):
         """
         # Check intégrité jeu (ac)
@@ -42,11 +43,10 @@ class MainMenu():
 
         """
 
-        
         self.window_width = self.settings.get_window_width()
-        
+
         self.window_height = self.settings.get_window_height()
-        
+
         self.pseudo = self.settings.get_pseudo()
         # Init Pygame
         pygame.font.init()
@@ -64,18 +64,24 @@ class MainMenu():
                 """Ferme le prgm en cas de fermeture de la fenetre."""
                 if event.type == pygame.QUIT:
                     self.running = False
-            message_bienvenue = f.Center_texte("Citadelle".upper(), self.window_width / 2, self.window_height * 0.10, (0, 255, 0),
-                                            "ARIAL", 50)
+            message_bienvenue = f.Center_texte("Citadelle".upper(), self.window_width / 2, self.window_height * 0.10,
+                                               (0, 255, 0),
+                                               "ARIAL", 50)
             text, text_rect = message_bienvenue.write(self.screen)
+            #TODO entrer un pseudo !
             """
-            if pseudo == "":
+            
+            if self.pseudo == "":
                 message = "Entre ton pseudo"
-                pseudo = f.TextBoxInput(Pseudo_InputBox)
+
             else:
-                message = pseudo
+                message = self.pseudo
+
+            pseudo_inputBox = f.makeTextBox(self.screen, self.window_width / 2, self.window_height * 0.70, 300, message,
+                                            maxLength=15, startingText=message)
+            f.showTextBox(self.screen,pseudo_inputBox)
+            self.pseudo = f.textBoxInput(pseudo_inputBox)
             """
-            pseudo_inputBox = f.makeTextBox(self.window_width / 2, self.window_height * 0.70, 300, 0, "message")
-            #f.showTextBox(pseudo_inputBox)
             btns = [f.Button_center("Solo", self.window_width * 0.2, self.window_height / 2, 150, 100, (0, 0, 255)),
                     f.Button_center("Multi", self.window_width * 0.8, self.window_height / 2, 150, 100, (0, 0, 255)),
                     f.Button_center("reglage", self.window_width * 0.9, self.window_height * 0.9, 150, 100, (0, 0, 0)),
@@ -106,7 +112,7 @@ class MainMenu():
                         if btn.click(pos):
                             self.running = False
                             clique = btn
-            
+
                     if clique.text == "Solo":
                         solo = Solo(self.screen)
                         solo.start()
